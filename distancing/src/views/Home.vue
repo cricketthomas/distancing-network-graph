@@ -1,75 +1,88 @@
 <template>
 	<div>
 		<div class="home">
-			<NetworkGraph :nodes="nodes" :links="links" :options="options" :nodeClick="onNodeClick" />
+			<NetworkGraph :nodes="state.nodes" :links="state.links" :options="options" :nodeClick="onNodeClick" />
 		</div>
 
 		<div style="border: 2px solid white; color: white;">
 			Select a node to create a new connection.
 			<hr />
-			<h5>id: {{ this.maxId }}</h5>
-			<h5>Link to {{this.currentNode }} </h5>
+			<h5>id: {{ maxId }}</h5>
+			<h5>Link to {{ state.currentNode }}</h5>
 			<label for="name">
 				Node Name:
 				<input type="text" v-model="newNode.name" />
 			</label>
+			{{newNode.name}}
 			<button @click="addNodeWithLink">Add new node</button>
 		</div>
 	</div>
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
 	import NetworkGraph from '@/components/NetworkGraph.vue';
 	import { INodeObject, Node, Link, Option } from '@/models/networkgraph';
+	import { defineComponent, ref, reactive, computed } from '@vue/composition-api';
 
-	export default Vue.extend({
+	interface State {
+		currentNode: number;
+		nodes: Node[];
+		links: Link[];
+	}
+
+	export default defineComponent({
+
 		name: 'Home',
-		data() {
+		setup() {
 			const currentNode: number = 0;
-			const nodes: Array<Node> = [{ id: 1, name: 'my node 1' }, { id: 2, name: 'my node 2' }, { id: 3, _color: 'orange' }];
-			const links: Array<Link> = [
+			const nodes: Node[] = [
+				{ id: 1, name: 'my node 1' },
+				{ id: 2, name: 'my node 2' },
+				{ id: 3, name: 'my node 4', _color: 'orange' },
+			];
+			const links: Link[] = [
 				{ sid: 1, tid: 2, _color: 'blue' },
 				{ sid: 2, tid: 2, _color: 'f0f' },
-				{ sid: 3, tid: 1, _color: 'rebeccapurple' }
+				{ sid: 3, tid: 1, _color: 'rebeccapurple' },
 			];
-			return {
+
+			let state = reactive<State>({
 				nodes,
 				links,
-				currentNode,
-				options: {
+				currentNode
+			});
+			const maxId: any = computed(() => Math.max(...nodes.map((i) => i.id)) + 1);
+			const newNode = reactive({id: null, name: '' , _color: null});
+			const options = reactive({
 					force: 3000,
 					nodeSize: 20,
 					nodeLabels: true,
 					linkWidth: 5,
-				},
-				newNode: {
-					id: null,
-					name: '',
-					_color: null,
-				}
+				})
+			const onNodeClick = (event: any, NodeObject: INodeObject): void => {
+				state.currentNode = NodeObject.index;
+				console.log(NodeObject);
+			};
+			const addNodeWithLink = (): any => {
+				let newNodeToAdd: Node = { id: maxId.value, name: newNode.name };
+				links.push({ sid: maxId, tid: currentNode + 1, _color: 'white' });
+				nodes.push(newNodeToAdd);
+				console.log(nodes);
+
+			};
+			return {
+				state,
+				maxId,
+				onNodeClick,
+				addNodeWithLink,
+				newNode,
+				options,
+				NetworkGraph
 			};
 		},
-		methods: {
-			onNodeClick(event: any, NodeObject: INodeObject) {
-				this.currentNode = NodeObject.index;
-				console.log(NodeObject);
-			},
-			addNodeWithLink(): void {
-				let newNode: Node = { id: this.maxId, name: this.newNode.name };
-				this.links.push({ sid: this.maxId, tid: this.currentNode + 1, _color: 'white' });
-				this.nodes.push(newNode);
-				console.log(this.nodes);
-			},
-		},
-		computed: {
-			maxId(): number {
-				return Math.max(...this.nodes.map((i) => i.id)) + 1;
-			},
-		},
-		components: {
-			NetworkGraph,
-		},
+	components: {
+		NetworkGraph
+	}
 	});
 </script>
 
