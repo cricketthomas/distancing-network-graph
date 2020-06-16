@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="home">
-			<NetworkGraph :nodes="state.nodes" :links="state.links" :options="options" :nodeClick="onNodeClick" />
+			<NetworkGraph :nodes="state.nodes" :links="state.links" :options="options" :nodeClick="onNodeClick" :linkClick="onLinkClick"/>
 		</div>
 
 		<div style="border: 2px solid white; color: white;">
@@ -13,7 +13,7 @@
 				Node Name:
 				<input type="text" v-model="newNode.name" />
 			</label>
-			{{newNode.name}}
+			{{ newNode.name }}
 			<button @click="addNodeWithLink">Add new node</button>
 		</div>
 	</div>
@@ -21,7 +21,7 @@
 
 <script lang="ts">
 	import NetworkGraph from '@/components/NetworkGraph.vue';
-	import { INodeObject, Node, Link, Option } from '@/models/networkgraph';
+	import { INodeObject, ILinkObject, Node, Link, Option } from '@/models/networkgraph';
 	import { defineComponent, ref, reactive, computed } from '@vue/composition-api';
 
 	interface State {
@@ -63,17 +63,20 @@
 				state.currentNode = NodeObject.index;
 				console.log(NodeObject);
 			};
+			const onLinkClick = (event: any, LinkObject: ILinkObject): void => {
+				console.log(LinkObject)
+			};
 			const addNodeWithLink = (): any => {
 				let newNodeToAdd: Node = { id: maxId.value, name: newNode.name };
 				links.push({ sid: maxId, tid: currentNode + 1, _color: 'white' });
 				nodes.push(newNodeToAdd);
 				console.log(nodes);
-
 			};
 			return {
 				state,
 				maxId,
 				onNodeClick,
+				onLinkClick,
 				addNodeWithLink,
 				newNode,
 				options,

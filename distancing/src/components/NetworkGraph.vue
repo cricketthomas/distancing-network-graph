@@ -1,6 +1,6 @@
 <template>
 	<div class="NetworkGraph">
-		<d3-network :net-nodes="nodes" :net-links="links" :options="options" @node-click="nodeClick" />
+		<d3-network :net-nodes="nodes" :net-links="links" :options="options" @node-click="nodeClick"  @link-click="linkClick" />
 	</div>
 </template>
 
@@ -16,7 +16,8 @@
 			nodes: Array as () => Array<Node>,
 			links: Array as () => Array<Link>,
 			options: Object as () => Option,
-			nodeClick: Function
+			nodeClick: Function,
+			linkClick: Function
 		},
 		components: {
 			D3Network,
