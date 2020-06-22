@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@vue/composition-api": "^0.6.3",
+    "axios": "^0.19.2",
+    "buefy": "^0.8.20",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
     "vue-d3-network": "^0.1.28",

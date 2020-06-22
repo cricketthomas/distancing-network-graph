@@ -1,11 +1,13 @@
 interface INodeObject {
     id: number;
     index: number;
-    name: string;
-    vx: number;
-    vy: number;
-    x: number;
-    y: number
+    name?: string;
+    vx?: number;
+    vy?: number;
+    x?: number;
+    y?: number
+    _color?: string;
+    
 }
 
 
@@ -43,6 +45,7 @@ interface TargetSource {
 
 interface Node {
     id: number;
+    index: number;
     name?: string;
     _color?: string;
 }
@@ -59,4 +62,4 @@ interface Option {
 }
 
 
-export { INodeObject, Node, Link, Option };
+export { INodeObject,ILinkObject, Node, Link, Option };
