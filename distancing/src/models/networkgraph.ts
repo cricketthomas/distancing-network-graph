@@ -42,7 +42,6 @@ interface TargetSource {
     y: number;
   }
 
-
 interface Node {
     id: number;
     index: number;
