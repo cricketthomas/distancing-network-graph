@@ -1,0 +1,64 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/cricket/Documents/GitHub/socialdistancing/api/distancing-api/distancing-api/distancing-api.csproj": {}
+  },
+  "projects": {
+    "/Users/cricket/Documents/GitHub/socialdistancing/api/distancing-api/distancing-api/distancing-api.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/cricket/Documents/GitHub/socialdistancing/api/distancing-api/distancing-api/distancing-api.csproj",
+        "projectName": "distancing-api",
+        "projectPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/distancing-api/distancing-api/distancing-api.csproj",
+        "packagesPath": "/Users/cricket/.nuget/packages/",
+        "outputPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/distancing-api/distancing-api/obj/",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "/Users/cricket/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.301/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
