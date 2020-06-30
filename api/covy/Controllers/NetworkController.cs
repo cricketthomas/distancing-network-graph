@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
-using covy.Infastructure.Data;
+using distancing.Infastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using static covy.Models.Network;
+using static distancing.Models.Network;
 
-namespace covy.Controllers {
+namespace distancing.Controllers {
     [ApiController]
     [Route("[controller]")]
     public class NetworkController : ControllerBase {

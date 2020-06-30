@@ -1376,9 +1376,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/covy.csproj",
-      "projectName": "covy",
-      "projectPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/covy.csproj",
+      "projectUniqueName": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/distancing.csproj",
+      "projectName": "distancing",
+      "projectPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/distancing.csproj",
       "packagesPath": "/Users/cricket/.nuget/packages/",
       "outputPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/obj/",
       "projectStyle": "PackageReference",
@@ -1386,7 +1386,7 @@
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/cricket/.nuget/NuGet/NuGet.Config"
+        "/Users/cricket/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"

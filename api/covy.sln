@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "covy", "covy\covy.csproj", "{85D5A52E-23CD-4E41-B7F6-3DEB7FE8DB20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "distancing", "covy\distancing.csproj", "{85D5A52E-23CD-4E41-B7F6-3DEB7FE8DB20}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

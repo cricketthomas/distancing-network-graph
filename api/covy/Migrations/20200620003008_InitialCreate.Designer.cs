@@ -4,36 +4,32 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using covy.Infastructure.Data;
+using distancing.Infastructure.Data;
 
-namespace covy.Migrations
-{
+namespace distancing.Migrations {
     [DbContext(typeof(NetworkContext))]
     [Migration("20200620003008_InitialCreate")]
-    partial class InitialCreate
-    {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
-        {
+    partial class InitialCreate {
+        protected override void BuildTargetModel(ModelBuilder modelBuilder) {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5");
 
-            modelBuilder.Entity("covy.Models.Network+NetworkGraph", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+            modelBuilder.Entity("distancing.Models.Network+NetworkGraph", b => {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT");
 
-                    b.Property<string>("schema")
-                        .HasColumnType("TEXT");
+                b.Property<string>("schema")
+                    .HasColumnType("TEXT");
 
-                    b.Property<int?>("updateCount")
-                        .HasColumnType("INTEGER");
+                b.Property<int?>("updateCount")
+                    .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("NetworkGraph");
-                });
+                b.ToTable("NetworkGraph");
+            });
 #pragma warning restore 612, 618
         }
     }

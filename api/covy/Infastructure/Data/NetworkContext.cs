@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using static covy.Models.Network;
+using static distancing.Models.Network;
 
-namespace covy.Infastructure.Data {
+namespace distancing.Infastructure.Data {
 
 
     public class NetworkContext : DbContext {

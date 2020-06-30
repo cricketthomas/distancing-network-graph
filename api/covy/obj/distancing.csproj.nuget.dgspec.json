@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/covy.csproj": {}
+    "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/distancing.csproj": {}
   },
   "projects": {
-    "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/covy.csproj": {
+    "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/distancing.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/covy.csproj",
-        "projectName": "covy",
-        "projectPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/covy.csproj",
+        "projectUniqueName": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/distancing.csproj",
+        "projectName": "distancing",
+        "projectPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/distancing.csproj",
         "packagesPath": "/Users/cricket/.nuget/packages/",
         "outputPath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/obj/",
         "projectStyle": "PackageReference",

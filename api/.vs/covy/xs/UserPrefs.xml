@@ -1,30 +1,29 @@
 ﻿<Properties StartupConfiguration="{85D5A52E-23CD-4E41-B7F6-3DEB7FE8DB20}|Default">
-  <MonoDevelop.Ide.ItemProperties.covy PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="covy/Models/Network.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="covy/Migrations/20200620023331_addNullabletype.cs">
     <Files>
       <File FileName="covy/Startup.cs" Line="35" Column="1" />
-      <File FileName="covy/Controllers/NetworkController.cs" Line="56" Column="27" />
-      <File FileName="covy/Models/Network.cs" Line="71" Column="1" />
+      <File FileName="covy/Controllers/NetworkController.cs" />
+      <File FileName="covy/Models/Network.cs" Line="10" Column="33" />
+      <File FileName="covy/Migrations/20200620003008_InitialCreate.Designer.cs" Line="7" Column="17" />
+      <File FileName="covy/Migrations/20200620003008_InitialCreate.cs" Line="4" Column="21" />
+      <File FileName="covy/Migrations/20200620023331_addNullabletype.Designer.cs" Line="21" Column="34" />
+      <File FileName="covy/Migrations/20200620023331_addNullabletype.cs" Line="3" Column="11" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="covy" expanded="True">
-            <Node name="covy" expanded="True">
+            <Node name="distancing" expanded="True" selected="True">
               <Node name="Controllers" expanded="True" />
-              <Node name="Models" expanded="True">
-                <Node name="Network.cs" selected="True" />
-              </Node>
+              <Node name="Models" expanded="True" />
               <Node name="Properties" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State />
-      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.distancing PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

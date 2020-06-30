@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace covy.Migrations
+namespace distancing.Migrations
 {
     public partial class NetworkName : Migration
     {

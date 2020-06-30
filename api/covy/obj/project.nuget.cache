@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R4QszmRxB+QIen0zWqzGBSwkOB6hOVEC0ChspM0mQ08yMJTzlRJ40kG/A37sf42qA2pFoPgpiV7acU9Nyv+Y6A==",
+  "dgSpecHash": "z1R0NqEH07MyDKCSLjy09WNHsbqqREtPifs1HPJpUEs8imZctkThtT9IwFadY2T1uGTtceXg4b9ElYf9oZOvDg==",
   "success": true,
-  "projectFilePath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/covy.csproj",
+  "projectFilePath": "/Users/cricket/Documents/GitHub/socialdistancing/api/covy/distancing.csproj",
   "expectedPackageFiles": [
     "/Users/cricket/.nuget/packages/microsoft.bcl.asyncinterfaces/1.1.1/microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "/Users/cricket/.nuget/packages/microsoft.bcl.hashcode/1.1.0/microsoft.bcl.hashcode.1.1.0.nupkg.sha512",

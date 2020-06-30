@@ -3,9 +3,9 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using covy.Infastructure.Data;
+using distancing.Infastructure.Data;
 
-namespace covy.Migrations
+namespace distancing.Migrations
 {
     [DbContext(typeof(NetworkContext))]
     partial class NetworkContextModelSnapshot : ModelSnapshot
@@ -16,7 +16,7 @@ namespace covy.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.5");
 
-            modelBuilder.Entity("covy.Models.Network+NetworkGraph", b =>
+            modelBuilder.Entity("distancing.Models.Network+NetworkGraph", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
