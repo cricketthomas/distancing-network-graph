@@ -44,7 +44,7 @@ interface TargetSource {
 
 interface Node {
     id: number;
-    index: number;
+    index?: number;
     name?: string;
     _color?: string;
 }

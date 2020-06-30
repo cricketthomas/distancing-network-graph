@@ -6,10 +6,13 @@ Vue.use(VueRouter);
 
 const routes: RouteConfig[] = [
   {
-    path: '/',
+    path: '/home/:networkId',
     name: 'Home',
     component: Home,
   },
+  { path: '/home', redirect: '/home/new' },
+  { path: '/', redirect: '/home/new' },
+
   {
     path: '/about',
     name: 'About',

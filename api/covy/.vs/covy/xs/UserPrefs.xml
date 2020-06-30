@@ -1,0 +1,33 @@
+﻿<Properties StartupConfiguration="{85D5A52E-23CD-4E41-B7F6-3DEB7FE8DB20}|Default">
+  <MonoDevelop.Ide.ItemProperties.covy PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="covy/Controllers/NetworkController.cs">
+    <Files>
+      <File FileName="covy/Startup.cs" Line="29" Column="1" />
+      <File FileName="covy/Controllers/NetworkController.cs" Line="25" Column="10" />
+      <File FileName="covy/Controllers/WeatherForecastController.cs" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="covy" expanded="True">
+            <Node name="covy" expanded="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="FrameworkReferences" expanded="True" />
+                <Node name="PackageDependencies" expanded="True" />
+              </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Properties" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

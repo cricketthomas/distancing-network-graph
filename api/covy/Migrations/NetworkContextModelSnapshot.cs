@@ -22,10 +22,16 @@ namespace covy.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("networkName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("schema")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("updateCount")
+                    b.Property<string>("shortId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("updateCount")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
