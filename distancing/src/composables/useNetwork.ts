@@ -1,56 +1,15 @@
-import { INodeObject, ILinkObject, Node, Link, Option } from '@/models/networkgraph';
+import { INodeObject, ILinkObject, Node, Link, Option, State } from '@/models/networkgraph';
 import { reactive, computed } from '@vue/composition-api';
+import useState from '@/composables/useState';
+import Router from '@/router/index.ts';
 import axios from 'axios';
-export default function() {
-	interface State {
-		currentNode: number;
-		currentLink: number;
-		nodes: Node[];
-		links: Link[];
-	}
 
-	const currentNode: number = 0;
-	const currentLink: number = 0;
-	const nodes: Node[] = [
-		{
-			id: 1,
-			name: 'my node 1',
-		},
-		{
-			id: 2,
-			name: 'my node 2',
-		},
-		{
-			id: 3,
-			name: 'my node 3',
-			_color: 'orange',
-		},
-	];
-	const links: Link[] = [
-		{
-			sid: 1,
-			tid: 2,
-			_color: 'blue',
-		},
-		{
-			sid: 2,
-			tid: 2,
-			_color: 'f0f',
-		},
-		{
-			sid: 3,
-			tid: 1,
-			_color: 'rebeccapurple',
-		},
-	];
+export default function () {
 
-	let state = reactive<State>({
-		nodes,
-		links,
-		currentNode,
-		currentLink,
-	});
-	const currentMaxId: any = computed(() => { 
+	const { state } = useState();
+
+
+	const currentMaxId: any = computed(() => {
 		// let nodeArray: INodeObject[] = [...state.nodes]
 		// return Math.max(...nodeArray.map(n => n.index));
 		return state.nodes.length;
@@ -90,21 +49,36 @@ export default function() {
 		console.log(newNodeToAdd);
 	};
 
+
+
 	const save = async () => {
+		console.log(Router.history)
 		let datum: any = {
 			nodes: state.nodes,
 			links: state.links,
 		};
-		const res = await axios
-			.post(`${process.env.VUE_APP_BASEURL}/Network`, datum)
-			.then((res) => console.log(res))
+		let path = window.location.pathname
+		let route: string = '';
+		await axios
+			.post(`${process.env.VUE_APP_API_BASEURL}/Network`, datum)
+			.then((res) => { route = res.data.shortId; })
 			.catch((err) => console.log(err));
+		history.pushState(path, 'new', route)
 	};
 
-	const get = async (networkId: string) => {
-		
-	}
 
+	const get = async (networkId: string) => {
+		return await axios.get(`${process.env.VUE_APP_API_BASEURL}/Network?shortId=${networkId}`)
+			.then((res) => {
+				let schema = JSON.parse(res.data.schema)
+				console.log(schema)
+				console.log(state)
+				state.nodes = schema.Nodes;
+				state.links = schema.Links;
+				return res.data
+			})
+			.catch((err) => console.log(err));
+	}
 	return {
 		state,
 		currentMaxId,
@@ -113,6 +87,7 @@ export default function() {
 		addNodeWithLink,
 		newNode,
 		options,
+		get,
 		save
 	};
 }

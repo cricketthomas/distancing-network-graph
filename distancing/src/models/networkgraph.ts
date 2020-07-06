@@ -7,7 +7,7 @@ interface INodeObject {
     x?: number;
     y?: number
     _color?: string;
-    
+
 }
 
 
@@ -31,7 +31,7 @@ interface LinkSource {
     x: number;
     y: number;
 }
-  
+
 interface TargetSource {
     id: string;
     index: number;
@@ -40,7 +40,7 @@ interface TargetSource {
     fy: number;
     x: number;
     y: number;
-  }
+}
 
 interface Node {
     id: number;
@@ -59,6 +59,12 @@ interface Option {
     nodeLabels: boolean;
     linkWidth: number;
 }
+interface State {
+    currentNode: number;
+    currentLink: number;
+    nodes: Node[];
+    links: Link[];
+}
 
 
-export { INodeObject,ILinkObject, Node, Link, Option };
+export { INodeObject, ILinkObject, Node, Link, Option, State };
