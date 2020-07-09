@@ -1,7 +1,6 @@
 import { INodeObject, ILinkObject, Node, Link, Option, State } from '@/models/networkgraph';
 import { reactive, computed } from '@vue/composition-api';
 import useState from '@/composables/useState';
-import Router from '@/router/index.ts';
 import axios from 'axios';
 
 export default function () {
@@ -52,7 +51,7 @@ export default function () {
 
 
 	const save = async () => {
-		console.log(Router.history)
+
 		let datum: any = {
 			nodes: state.nodes,
 			links: state.links,
@@ -61,7 +60,11 @@ export default function () {
 		let route: string = '';
 		await axios
 			.post(`${process.env.VUE_APP_API_BASEURL}/Network`, datum)
-			.then((res) => { route = res.data.shortId; })
+			.then((res) => {
+				route = res.data.shortId;
+				state.isNewNetwork = false;
+
+			})
 			.catch((err) => console.log(err));
 		history.pushState(path, 'new', route)
 	};

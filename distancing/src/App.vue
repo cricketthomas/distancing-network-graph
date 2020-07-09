@@ -10,8 +10,16 @@ import { defineComponent } from '@vue/composition-api';
 
 export default defineComponent({
   name: 'App',
+  	watch: {
+			$route(to, from) {
+				
+					console.log(to, from);
+				
+			},
+		}
 });
 </script>
 <style lang="scss">
+
 	@import '@/assets/styles/style.scss';
 </style>

@@ -64,6 +64,7 @@ interface State {
     currentLink: number;
     nodes: Node[];
     links: Link[];
+    isNewNetwork: boolean
 }
 
 

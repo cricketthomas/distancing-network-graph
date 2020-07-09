@@ -9,7 +9,7 @@
 			<div class="column is-6">
 				<b-collapse class="card edit-network-card" animation="slide" aria-id="contentIdForA11y3">
 					<div slot="trigger" slot-scope="props" class="card-header" role="button" aria-controls="contentIdForA11y3">
-						<p class="card-header-title"><span v-if="isNewNetwork">Create a network</span><span v-else>Edit network</span></p>
+						<p class="card-header-title"><span v-if="state.isNewNetwork">Create a network</span><span v-else>Edit network</span></p>
 						<a class="card-header-icon">
 							<b-icon :icon="props.open ? 'menu-down' : 'menu-up'"> </b-icon>
 						</a>
@@ -41,11 +41,11 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import { defineComponent, ref, reactive, computed, onMounted, watchEffect } from '@vue/composition-api';
+	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch } from '@vue/composition-api';
 
 	import NetworkGraph from '@/components/NetworkGraph.vue';
 	import SideBar from '@/components/SideBar.vue';
-	import useNetwork from '@/composables/useNetwork';
+	import useNetworkGraph from '@/composables/useNetworkGraph';
 	import useTheme from '@/composables/useTheme';
 
 	import { ISavedNetwork } from '@/models/apiRespone.ts';
@@ -54,16 +54,13 @@
 	export default defineComponent({
 		name: 'Home',
 		setup(props, { root }) {
-			let isNewNetwork = ref<Boolean>(false);
-			let currentNetwork: ISavedNetwork;
-			watchEffect(() => {
-				console.log(window.location.pathname);
-			});
+
+		let currentNetwork: ISavedNetwork;
 
 			onMounted(() => {
 				// set the theme
 				if (root.$route.params.networkId === 'new'.toLowerCase()) {
-					isNewNetwork.value = true;
+					state.isNewNetwork = true;
 				} else {
 					let networkId = get(root.$route.params.networkId);
 					console.log(networkId);
@@ -85,9 +82,9 @@
 			// 	context.root.$buefy.dialog.alert('hello');
 			// };
 
-			const { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, get, save } = useNetwork();
+			const { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, get, save } = useNetworkGraph();
 			const { lightMode, changeTheme } = useTheme();
-			return { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, save, get, lightMode, changeTheme, isNewNetwork };
+			return { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, save, get, lightMode, changeTheme };
 		},
 		components: {
 			NetworkGraph,
