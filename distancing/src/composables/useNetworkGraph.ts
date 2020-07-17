@@ -50,23 +50,27 @@ export default function () {
 
 
 
-	const save = async () => {
-
+	const save = async (shortId?: string ) => {
 		let datum: any = {
 			nodes: state.nodes,
 			links: state.links,
 		};
-		let path = window.location.pathname
-		let route: string = '';
-		await axios
-			.post(`${process.env.VUE_APP_API_BASEURL}/Network`, datum)
-			.then((res) => {
-				route = res.data.shortId;
-				state.isNewNetwork = false;
-
-			})
-			.catch((err) => console.log(err));
-		history.pushState(path, 'new', route)
+		if (!shortId) {
+			let path = window.location.pathname
+			let route: string = '';
+			await axios
+				.post(`${process.env.VUE_APP_API_BASEURL}/Network`, datum)
+				.then((res) => {
+					route = res.data.shortId;
+					state.isNewNetwork = false;
+				})
+				.catch((err) => console.log(err));
+			history.pushState(path, 'new', route)
+		} else {
+			await axios.put(`${process.env.VUE_APP_API_BASEURL}/Network/${shortId}`, datum)
+				.then((res) => console.log("updated", res))
+				.catch(err => console.log(err))
+		}
 	};
 
 
