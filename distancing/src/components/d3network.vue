@@ -26,9 +26,16 @@
 
 			var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-			var nodes = [],
-			links = [];
-
+            const nodes: any[] = [
+				{ id: 1, name: 'my node 1' },
+				{ id: 2, name: 'my node 2' },
+				{ id: 3, name: 'my node 4', _color: 'orange' },
+			];
+			const links: any[] = [
+				{ sid: 1, tid: 2, _color: 'blue' },
+				{ sid: 2, tid: 2, _color: 'f0f' },
+				{ sid: 3, tid: 1, _color: 'rebeccapurple' },
+			];
 
 
 			var simulation = d3.forceSimulation()
