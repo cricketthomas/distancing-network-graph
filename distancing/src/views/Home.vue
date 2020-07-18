@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<b-switch v-on:input="changeTheme" v-model="lightMode" passive-type="is-dark" type="is-warning"> </b-switch>
+		<router-link to="/about">about</router-link>
 		<div>
 			<NetworkGraph :nodes="state.nodes" :links="state.links" :options="options" :nodeClick="onNodeClick" :linkClick="onLinkClick" />
 		</div>

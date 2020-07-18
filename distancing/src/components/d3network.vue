@@ -2,8 +2,8 @@
 	<div>
 		<svg id="network"></svg>
 		<button @click="addNode()">add node</button>
-		<button @click="addLink()">add link</button><hr>
-    {{state.nodes}}
+		<hr />
+		{{ state.nodes }}
 	</div>
 </template>
 
@@ -13,35 +13,25 @@
 	import Vue from 'vue';
 	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch } from '@vue/composition-api';
 
-
 	export default defineComponent({
 		name: 'd3network',
 		setup(props, { root }) {
-
-interface State {
-    nodes: INodeObjectx[];
-    links: ILinkObjectxx[];
-}
-
-const state = reactive<State>({
-    nodes: [
-				{ name: 'Finkler', sex: 'F', id: 0 },
-				{ name: 'Peter', sex: 'M', id: 1 },
-				{ name: 'Ashley', sex: 'F', id: 2 },
-      ],
-      links:[
-				{ source: 'Finkler', target: 'Ashley', type: 'A' },
-				{ source: 'Peter', target: 'Finkler', type: 'E' },
-			]
-  })
-
-			interface ILinkObjectxx {
-				source: string;
-				type: string;
-				target: string;
+			interface State {
+				nodes: any[];
+				links: any[];
 			}
 
-
+			const state = reactive<State>({
+				nodes: [
+					{ id: 0, name: 'Finkler', sex: 'F' },
+					{ id: 1, name: 'Peter', sex: 'M' },
+					{ id: 2, name: 'Ashley', sex: 'F' },
+				],
+				links: [
+					{ source: 0, target: 2 },
+					{ source: 1, target: 0 },
+				],
+			});
 
 			interface INodeObjectx {
 				id: number;
@@ -54,24 +44,24 @@ const state = reactive<State>({
 				sex?: string;
 			}
 			const addNode = (): any => {
+         addLink();
 				let newNodeToAdd: INodeObjectx = {
 					id: 3,
-					index: 3,
 					sex: 'F',
-					name: 'paige',
+					name: 'Paige',
 					vx: 0,
 					vy: 0,
 					x: 0,
 					y: 0,
-				};
-				state.nodes.push(newNodeToAdd);
+        };
+       
+        state.nodes.push(newNodeToAdd);
 			};
 
 			interface ILinkObjectx {
 				index: number;
-				type: string;
-				source: SourceType;
-				target: SourceType;
+				source: number;
+				target: number;
 			}
 
 			interface SourceType {
@@ -82,49 +72,47 @@ const state = reactive<State>({
 				vy?: number;
 				x?: number;
 				y?: number;
+				sex: string;
 			}
 			const addLink = () => {
 				const newTarget: SourceType = {
 					id: 3,
 					index: 3,
 					name: 'Paige',
-					// vx: 0,
-					// vy: 0,
-					// x: 0,
-					// y: 0,
+					vx: 0,
+					vy: 0,
+					x: 0,
+					y: 0,
+					sex: 'F'
 				};
 				const newSource: SourceType = {
 					id: 0,
 					index: 0,
 					name: 'Finkler',
-					// vx: 0.0002548009541004198,
-					// vy: 0.0002548009541004198,
-					// x: 0.0002548009541004198,
-					// y: 0.0002548009541004198,
-	       };
-	       const newLink: ILinkObjectx = {
-	         index: 2,
-	         source: newSource,
-	         target: newTarget,
-	         type: "E"
-	       }
+					vx: 0,
+					vy: 0,
+					x: 0,
+					y: 0,
+					sex: 'F'
+				};
+				const newLink: ILinkObjectx = {
+					index: 2,
+					source: 3,
+					target: 1,
+				};
 
-	       state.links.push(newLink)
+				state.links.push(newLink);
+				d3.select('svg').selectAll('*').remove();
 			};
 
 			//Function to choose the line colour and thickness
 			//If the link type is "A" return green
 			//If the link type is "E" return red
-			function linkColour(d) {
-				if (d.type == 'A') {
-					return 'green';
-				} else {
-					return 'red';
-				}
-			}
 
-	     function renderChart(){
-	     var svg = d3.select('svg'),
+			const renderChart = () => {
+        d3.select('svg').selectAll('*').remove();
+
+				var svg = d3.select('svg'),
 					width = +svg.attr('width'),
 					height = +svg.attr('height');
 
@@ -132,9 +120,8 @@ const state = reactive<State>({
 
 				//set up the simulation and add forces
 				var simulation = d3.forceSimulation().nodes(state.nodes);
-				var link_force = d3.forceLink(state.links).id(function(d) {
-					return d.name;
-				});
+				var link_force = d3.forceLink(state.links);
+				//.id(function(d) {return d.name;	});
 				var charge_force = d3.forceManyBody().strength(-100);
 				var center_force = d3.forceCenter(width / 2, height / 2);
 
@@ -158,7 +145,7 @@ const state = reactive<State>({
 					.enter()
 					.append('line')
 					.attr('stroke-width', 2)
-					.style('stroke', linkColour);
+					.attr('class', 'link');
 
 				//draw circles for the nodes
 				var node = g
@@ -170,6 +157,11 @@ const state = reactive<State>({
 					.append('circle')
 					.attr('r', radius)
 					.attr('fill', circleColor);
+
+				node.on('click', function(d) {
+					console.log(d);
+					// return d.descendants().splice(1).indexOf(e) > -1
+				});
 
 				// This is the label for each node
 				var text = g
@@ -259,31 +251,29 @@ const state = reactive<State>({
 				//add zoom capabilities
 				var zoom_handler = d3.zoom().on('zoom', zoom_actions);
 
-	       zoom_handler(svg);
-	       }
+        zoom_handler(svg);
+        
+			};
 			onMounted(() => {
-        renderChart()
-      });
+				renderChart();
+			});
 
+			watch(
+				() => state.nodes,
+				(count, prevCount) => {
+					d3.select('svg').selectAll('*').remove();
+					renderChart();
+				}
+			);
 
-watch(
-  () => state.nodes,
-  (count, prevCount) => {
-    renderChart()
-    console.log(count,prevCount)
-  }
-)
-
-
-
-return { addNode, addLink, state, renderChart};
+			return { addNode, addLink, state, renderChart };
 		},
 	});
 </script>
 
 <style lang="scss">
 	.links line {
-		stroke: #999;
+		stroke: blue;
 		stroke-opacity: 0.6;
 	}
 
