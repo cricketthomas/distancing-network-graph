@@ -7,7 +7,6 @@ interface INodeObject {
     x?: number;
     y?: number
     _color?: string;
-
 }
 
 
