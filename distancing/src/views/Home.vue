@@ -65,17 +65,6 @@
 					let networkId = get(root.$route.params.networkId);
 					console.log(networkId);
 				}
-
-				if (!localStorage.lightMode) {
-					console.log('updating to light');
-					document.body.setAttribute('data-theme', '');
-					localStorage.setItem('lightMode', 'true');
-				}
-				if (localStorage.lightMode == 'false') {
-					console.log('updating to dark');
-					document.body.setAttribute('data-theme', 'dark');
-					localStorage.setItem('lightMode', 'false');
-				}
 			});
 			// const cardModal = () => {
 			// 	console.log(context);
