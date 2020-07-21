@@ -1,9 +1,16 @@
 <template>
 	<div>
 		<svg id="network"></svg>
+		<!-- <h1>Current Selected Node {{currentNodeSelected}}</h1> -->
 		<button @click="addNode()">add node</button>
+		<button @click="addLink()">add link</button>
 		<hr />
 		{{ state.nodes }}
+		<h3>links</h3>
+		{{ state.links.length }}
+		<hr />
+		<h3>props</h3>
+		{{ nodes_array }}
 	</div>
 </template>
 
@@ -15,6 +22,12 @@
 
 	export default defineComponent({
 		name: 'd3network',
+		props: {
+			nodes_array: Array as () => Array<any>,
+			links_array: Array as () => Array<any>,
+			nodeClick: Function,
+			linkClick: Function,
+		},
 		setup(props, { root }) {
 			interface State {
 				nodes: any[];
@@ -26,6 +39,7 @@
 					{ id: 0, name: 'Finkler', sex: 'F' },
 					{ id: 1, name: 'Peter', sex: 'M' },
 					{ id: 2, name: 'Ashley', sex: 'F' },
+					{ id: 3, name: 'Cricket', sex: 'M' },
 				],
 				links: [
 					{ source: 0, target: 2 },
@@ -37,93 +51,54 @@
 				id: number;
 				index?: number;
 				name?: string;
-				vx?: number;
-				vy?: number;
-				x?: number;
-				y?: number;
+				// vx?: number;
+				// vy?: number;
+				// x?: number;
+				// y?: number;
 				sex?: string;
 			}
 			const addNode = (): any => {
-         addLink();
 				let newNodeToAdd: INodeObjectx = {
-					id: 3,
+					id: 4,
 					sex: 'F',
 					name: 'Paige',
-					vx: 0,
-					vy: 0,
-					x: 0,
-					y: 0,
-        };
-       
-        state.nodes.push(newNodeToAdd);
+				};
+				state.nodes.push(newNodeToAdd);
 			};
 
-			interface ILinkObjectx {
-				index: number;
+			interface ISimpleLink {
 				source: number;
 				target: number;
 			}
 
-			interface SourceType {
-				id: number;
-				index: number;
-				name: string;
-				vx?: number;
-				vy?: number;
-				x?: number;
-				y?: number;
-				sex: string;
-			}
 			const addLink = () => {
-				const newTarget: SourceType = {
-					id: 3,
-					index: 3,
-					name: 'Paige',
-					vx: 0,
-					vy: 0,
-					x: 0,
-					y: 0,
-					sex: 'F'
-				};
-				const newSource: SourceType = {
-					id: 0,
-					index: 0,
-					name: 'Finkler',
-					vx: 0,
-					vy: 0,
-					x: 0,
-					y: 0,
-					sex: 'F'
-				};
-				const newLink: ILinkObjectx = {
-					index: 2,
+				const link: ISimpleLink = {
 					source: 3,
-					target: 1,
+					target: 4,
 				};
-
-				state.links.push(newLink);
-				d3.select('svg').selectAll('*').remove();
+				state.links.push(link);
 			};
 
 			//Function to choose the line colour and thickness
 			//If the link type is "A" return green
 			//If the link type is "E" return red
+			var width = 600;
+			var height = 600;
+      var radius = 10;
 
-			const renderChart = () => {
+      
+      const renderChart = () => {
         d3.select('svg').selectAll('*').remove();
-
-				var svg = d3.select('svg'),
-					width = +svg.attr('width'),
-					height = +svg.attr('height');
-
-				var radius = 15;
-
+      var simulation = d3.forceSimulation().nodes(state.nodes)//.id(function(d) { return d.id; });;
+      var link_force = d3.forceLink(state.links).id(function(d) { return d.index; });;
+      var charge_force = d3.forceManyBody().strength(-100);
+      var center_force = d3.forceCenter(width / 2, height / 2);
+      
+				var svg = d3
+					.select('svg')
+					.attr('width', width)
+					.attr('height', height);
 				//set up the simulation and add forces
-				var simulation = d3.forceSimulation().nodes(state.nodes);
-				var link_force = d3.forceLink(state.links);
-				//.id(function(d) {return d.name;	});
-				var charge_force = d3.forceManyBody().strength(-100);
-				var center_force = d3.forceCenter(width / 2, height / 2);
 
 				simulation
 					.force('charge_force', charge_force)
@@ -134,7 +109,7 @@
 				simulation.on('tick', tickActions);
 
 				//add encompassing group for the zoom
-				var g = svg.append('g').attr('class', 'everything');
+				var g = svg.append('g').attr('class', 'nodes_links');
 
 				//draw lines for the links
 				var link = g
@@ -156,13 +131,14 @@
 					.enter()
 					.append('circle')
 					.attr('r', radius)
-					.attr('fill', circleColor);
+					//.attr('fill', circleColor);
 
 				node.on('click', function(d) {
-					console.log(d);
+          console.log(d);
 					// return d.descendants().splice(1).indexOf(e) > -1
-				});
-
+        });
+        
+     
 				// This is the label for each node
 				var text = g
 					.selectAll('text')
@@ -175,9 +151,9 @@
 						return d.name;
 					})
 					.attr('text-anchor', 'middle')
-					.attr('group', function(d) {
-						return d.group;
-					});
+					// .attr('group', function(d) {
+					// 	return d.group;
+					// });
 
 				function tickActions() {
 					//update circle positions each tick of the simulation
@@ -186,6 +162,7 @@
 					}).attr('cy', function(d) {
 						return d.y;
 					});
+
 					link.attr('x1', function(d) {
 						return d.source.x;
 					})
@@ -198,6 +175,7 @@
 						.attr('y2', function(d) {
 							return d.target.y;
 						});
+
 					text.attr('x', function(d) {
 						return d.x;
 					}).attr('y', function(d) {
@@ -213,32 +191,29 @@
 					d.fx = d.x;
 					d.fy = d.y;
 				}
-
 				//make sure you can't drag the circle outside the box
 				function drag_drag(d) {
 					d.fx = d3.event.x;
 					d.fy = d3.event.y;
 				}
-
 				function drag_end(d) {
 					if (!d3.event.active) simulation.alphaTarget(0);
 					d.fx = null;
 					d.fy = null;
 				}
-
 				//Zoom functions
 				function zoom_actions() {
 					g.attr('transform', d3.event.transform);
 				}
-				/** Functions **/
-				function circleColor(d) {
-					if (d.sex == 'M') {
-						return 'blue';
-					} else {
-						return 'pink';
-					}
-				}
 
+				/** Functions **/
+				// function circleColor(d) {
+				// 	if (d.sex == 'M') {
+				// 		return 'blue';
+				// 	} else {
+				// 		return 'pink';
+				// 	}
+				// }
 				//add drag capabilities
 				var drag_handler = d3
 					.drag()
@@ -247,12 +222,10 @@
 					.on('end', drag_end);
 
 				drag_handler(node);
-
 				//add zoom capabilities
 				var zoom_handler = d3.zoom().on('zoom', zoom_actions);
 
-        zoom_handler(svg);
-        
+				zoom_handler(svg);
 			};
 			onMounted(() => {
 				renderChart();
@@ -260,9 +233,27 @@
 
 			watch(
 				() => state.nodes,
-				(count, prevCount) => {
-					d3.select('svg').selectAll('*').remove();
-					renderChart();
+				(newNodes, prevNodes) => {
+          console.log(state.nodes)
+     
+          
+          renderChart();
+				}
+			);
+			watch(
+				() => state.links,
+				(newLinks, prevLinks) => {
+          console.log(state.links)
+
+          link_force = d3.forceLink(state.links);
+				}
+			);
+			watch(
+				() => props.nodes_array,
+				(newNodes, oldNodes) => {
+					// d3.select('svg').selectAll('*').remove();
+					// renderChart();
+					console.log(newNodes);
 				}
 			);
 
@@ -273,13 +264,15 @@
 
 <style lang="scss">
 	.links line {
-		stroke: blue;
-		stroke-opacity: 0.6;
+		stroke: navy;
+    stroke-opacity: 0.6;
 	}
 
 	.nodes circle {
-		stroke: black;
-		stroke-width: 0px;
+		stroke: rgba(0, 0, 0, 0.301);
+		stroke-opacity: 0.5;
+    stroke-width: 5px;
+    fill: gray;
 	}
 	svg {
 		text-align: center;
