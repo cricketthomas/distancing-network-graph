@@ -49,23 +49,30 @@
 				],
 			});
 			const currentMaxId: any = computed(() => {
-				return state.nodes.length;
+				let nodeArray: any[] = [...state.nodes]
+				return Math.max(...nodeArray.map(n => n.id));
+			});
+			const currentMaxIdx: any = computed(() => {
+				let nodeArray: any[] = [...state.nodes]
+				return Math.max(...nodeArray.map(n => n.index));
 			});
 			interface INodeObjectx {
 				id: number;
 				index?: number;
 				name?: string;
-				// vx?: number;
-				// vy?: number;
-				// x?: number;
-				// y?: number;
+				vx?: number;
+				vy?: number;
+				x?: number;
+				y?: number;
 				sex?: string;
 			}
 			const addNode = (): any => {
 				let newNodeToAdd: INodeObjectx = {
-					id: currentMaxId.value,
+					id: currentMaxId.value + 1,
 					sex: 'F',
-					name: `test-${currentMaxId.value}`,
+					name: `node-${currentMaxId.value + 1}`,
+					vx: 10.5,
+					vy: 11.2,
 				};
 				state.nodes.push(newNodeToAdd);
 			};
@@ -77,8 +84,8 @@
 
 			const addLink = () => {
 				const link: ISimpleLink = {
-					source: 3,
-					target: 4,
+					source: currentMaxIdx.value - 1,
+					target: currentMaxIdx.value,
 				};
 				state.links.push(link);
 			};
@@ -90,10 +97,11 @@
 			var link_force = d3.forceLink(state.links).id(function(d) {
 				return d.index;
 			});
-			var charge_force = d3.forceManyBody().strength(-100);
+			var charge_force = d3.forceManyBody().strength(-30);
 			var center_force = d3.forceCenter(width / 2, height / 2);
 
 			const renderChart = () => {
+	        d3.select('svg').selectAll('*').remove();
 			simulation
 					.force('charge_force', charge_force)
 					.force('center_force', center_force)
@@ -240,15 +248,14 @@
 					//simulation.force("link").links(state.links);
 					renderChart()
 					simulation.alpha(1).restart();
-					
 					console.log(state.nodes);
 				}
 			);
 			watch(
 				() => state.links,
 				(newLinks, prevLinks) => {
-					simulation.nodes(state.nodes);
-					simulation.force("link").links(newLinks);
+					//simulation.nodes(state.nodes);
+					//simulation.force("link").links(newLinks);
 					simulation.alpha(1).restart();
 					console.log(state.links);
 				}
@@ -258,7 +265,7 @@
 		const restart = () =>simulation.alphaTarget(0.1).restart();
 
 
-			return { addNode, addLink, state, renderChart, restart, stop };
+			return { addNode, addLink, state, renderChart, restart, stop,currentMaxId ,currentMaxIdx};
 		},
 	});
 </script>
