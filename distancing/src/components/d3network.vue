@@ -60,10 +60,10 @@
 				id: number;
 				index?: number;
 				name?: string;
-				vx?: number;
-				vy?: number;
-				x?: number;
-				y?: number;
+				// vx?: number;
+				// vy?: number;
+				// x?: number;
+				// y?: number;
 				sex?: string;
 			}
 			const addNode = (): any => {
@@ -71,8 +71,8 @@
 					id: currentMaxId.value + 1,
 					sex: 'F',
 					name: `node-${currentMaxId.value + 1}`,
-					vx: 10.5,
-					vy: 11.2,
+					// vx: 10.5,
+					// vy: 11.2,
 				};
 				state.nodes.push(newNodeToAdd);
 			};
@@ -256,7 +256,9 @@
 				(newLinks, prevLinks) => {
 					//simulation.nodes(state.nodes);
 					//simulation.force("link").links(newLinks);
+					d3.forceLink(newLinks).id(function(d) {return d.index;});				
 					simulation.alpha(1).restart();
+					renderChart()
 					console.log(state.links);
 				}
 			);
