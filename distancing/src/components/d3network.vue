@@ -11,6 +11,8 @@
 		<hr />
 		<h3>props</h3>
 		{{ nodes_array }}
+		<button @click="stop()">stop</button>
+		<button @click="restart()">restart</button>
 	</div>
 </template>
 
@@ -46,7 +48,9 @@
 					{ source: 1, target: 0 },
 				],
 			});
-
+			const currentMaxId: any = computed(() => {
+				return state.nodes.length;
+			});
 			interface INodeObjectx {
 				id: number;
 				index?: number;
@@ -59,9 +63,9 @@
 			}
 			const addNode = (): any => {
 				let newNodeToAdd: INodeObjectx = {
-					id: 4,
+					id: currentMaxId.value,
 					sex: 'F',
-					name: 'Paige',
+					name: `test-${currentMaxId.value}`,
 				};
 				state.nodes.push(newNodeToAdd);
 			};
@@ -79,32 +83,29 @@
 				state.links.push(link);
 			};
 
-			//Function to choose the line colour and thickness
-			//If the link type is "A" return green
-			//If the link type is "E" return red
 			var width = 600;
 			var height = 600;
-      var radius = 10;
+			var radius = 10;
+			var simulation = d3.forceSimulation().nodes(state.nodes); //.id(function(d) { return d.id; });;
+			var link_force = d3.forceLink(state.links).id(function(d) {
+				return d.index;
+			});
+			var charge_force = d3.forceManyBody().strength(-100);
+			var center_force = d3.forceCenter(width / 2, height / 2);
 
-      
-      const renderChart = () => {
-        d3.select('svg').selectAll('*').remove();
-      var simulation = d3.forceSimulation().nodes(state.nodes)//.id(function(d) { return d.id; });;
-      var link_force = d3.forceLink(state.links).id(function(d) { return d.index; });;
-      var charge_force = d3.forceManyBody().strength(-100);
-      var center_force = d3.forceCenter(width / 2, height / 2);
-      
+			const renderChart = () => {
+			simulation
+					.force('charge_force', charge_force)
+					.force('center_force', center_force)
+					.force('links', link_force);
+
 				var svg = d3
 					.select('svg')
 					.attr('width', width)
 					.attr('height', height);
 				//set up the simulation and add forces
 
-				simulation
-					.force('charge_force', charge_force)
-					.force('center_force', center_force)
-					.force('links', link_force);
-
+				
 				//add tick instructions:
 				simulation.on('tick', tickActions);
 
@@ -130,15 +131,14 @@
 					.data(state.nodes)
 					.enter()
 					.append('circle')
-					.attr('r', radius)
-					//.attr('fill', circleColor);
+					.attr('r', radius);
+				//.attr('fill', circleColor);
 
 				node.on('click', function(d) {
-          console.log(d);
+					console.log(d);
 					// return d.descendants().splice(1).indexOf(e) > -1
-        });
-        
-     
+				});
+
 				// This is the label for each node
 				var text = g
 					.selectAll('text')
@@ -150,10 +150,10 @@
 					.text(function(d) {
 						return d.name;
 					})
-					.attr('text-anchor', 'middle')
-					// .attr('group', function(d) {
-					// 	return d.group;
-					// });
+					.attr('text-anchor', 'middle');
+				// .attr('group', function(d) {
+				// 	return d.group;
+				// });
 
 				function tickActions() {
 					//update circle positions each tick of the simulation
@@ -181,6 +181,8 @@
 					}).attr('y', function(d) {
 						return d.y;
 					});
+					simulation.restart()
+					simulation.tick()
 				}
 				//Drag functions
 				//d is the node
@@ -234,30 +236,29 @@
 			watch(
 				() => state.nodes,
 				(newNodes, prevNodes) => {
-          console.log(state.nodes)
-     
-          
-          renderChart();
+					simulation.nodes(newNodes);
+					//simulation.force("link").links(state.links);
+					renderChart()
+					simulation.alpha(1).restart();
+					
+					console.log(state.nodes);
 				}
 			);
 			watch(
 				() => state.links,
 				(newLinks, prevLinks) => {
-          console.log(state.links)
-
-          link_force = d3.forceLink(state.links);
+					simulation.nodes(state.nodes);
+					simulation.force("link").links(newLinks);
+					simulation.alpha(1).restart();
+					console.log(state.links);
 				}
 			);
-			watch(
-				() => props.nodes_array,
-				(newNodes, oldNodes) => {
-					// d3.select('svg').selectAll('*').remove();
-					// renderChart();
-					console.log(newNodes);
-				}
-			);
+		
+		const stop = () => simulation.alphaTarget(0.1).stop();
+		const restart = () =>simulation.alphaTarget(0.1).restart();
 
-			return { addNode, addLink, state, renderChart };
+
+			return { addNode, addLink, state, renderChart, restart, stop };
 		},
 	});
 </script>
@@ -265,14 +266,14 @@
 <style lang="scss">
 	.links line {
 		stroke: navy;
-    stroke-opacity: 0.6;
+		stroke-opacity: 0.6;
 	}
 
 	.nodes circle {
 		stroke: rgba(0, 0, 0, 0.301);
 		stroke-opacity: 0.5;
-    stroke-width: 5px;
-    fill: gray;
+		stroke-width: 5px;
+		fill: gray;
 	}
 	svg {
 		text-align: center;
