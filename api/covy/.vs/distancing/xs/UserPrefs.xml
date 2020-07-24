@@ -1,17 +1,25 @@
 ﻿<Properties StartupConfiguration="{3BFA2651-54C1-4DF4-8FC3-21DA87F9E545}|Default">
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Models/Network.cs">
+    <Files>
+      <File FileName="Controllers/NetworkController.cs" Line="46" Column="71" />
+      <File FileName="Models/Network.cs" Line="20" Column="42" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="distancing" expanded="True">
             <Node name="distancing" expanded="True">
-              <Node name="Controllers" expanded="True">
-                <Node name="NetworkController.cs" selected="True" />
-              </Node>
+              <Node name="Controllers" expanded="True" />
               <Node name="Infastructure" expanded="True" />
+              <Node name="Models" expanded="True">
+                <Node name="Network.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
@@ -19,7 +27,9 @@
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/cricket/Documents/GitHub/socialdistancing/api/covy/Controllers/NetworkController.cs" relfile="Controllers/NetworkController.cs" line="38" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MultiItemStartupConfigurations />
 </Properties>

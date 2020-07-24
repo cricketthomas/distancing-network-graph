@@ -62,6 +62,7 @@ interface Option {
 interface State {
     currentNode: number;
     currentLink: number;
+    shortId?: string;
     nodes: Node[];
     links: Link[];
     isNewNetwork: boolean

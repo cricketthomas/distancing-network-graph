@@ -174,7 +174,7 @@
 				(newNodes, prevNodes) => {
 					simulation.nodes(newNodes);
 					renderChart();
-					simulation.alpha(1).restart();
+					//simulation.alpha(1).restart();
 				}
 			);
 			watch(
@@ -183,7 +183,7 @@
 					d3.forceLink(newLinks).id(function(d) {
 						return d.index;
 					});
-					simulation.alpha(1).restart();
+					//simulation.alpha(1).restart();
 					renderChart();
 				}
 			);
@@ -191,7 +191,7 @@
 			const stop = () => simulation.alphaTarget(0.1).stop();
 			const restart = () => simulation.alphaTarget(0.1).restart();
 
-			return { renderChart };
+			return { renderChart,stop, restart };
 		},
 	});
 </script>

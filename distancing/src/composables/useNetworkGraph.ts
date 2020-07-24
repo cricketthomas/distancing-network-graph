@@ -2,7 +2,7 @@ import { INodeObject, ILinkObject, Node, Link, Option, State } from '@/models/ne
 import { reactive, computed } from '@vue/composition-api';
 import useState from '@/composables/useState';
 import axios from 'axios';
-
+import router from '@/router';
 export default function () {
 
 	const { state } = useState();
@@ -55,7 +55,8 @@ export default function () {
 			nodes: state.nodes,
 			links: state.links,
 		};
-		if (!shortId) {
+		console.log(datum)
+		if (!state.shortId && state.isNewNetwork) {
 			let path = window.location.pathname
 			let route: string = '';
 			await axios
@@ -67,7 +68,7 @@ export default function () {
 				.catch((err) => console.log(err));
 			history.pushState(path, 'new', route)
 		} else {
-			await axios.put(`${process.env.VUE_APP_API_BASEURL}/Network/${shortId}`, datum)
+			await axios.put(`${process.env.VUE_APP_API_BASEURL}/Network/${state.shortId}`, datum)
 				.then((res) => console.log("updated", res))
 				.catch(err => console.log(err))
 		}
@@ -77,6 +78,7 @@ export default function () {
 	const get = async (networkId: string) => {
 		return await axios.get(`${process.env.VUE_APP_API_BASEURL}/Network?shortId=${networkId}`)
 			.then((res) => {
+				state.shortId = router.history.current.params.networkId;
 				let schema = JSON.parse(res.data.schema)
 				console.log(schema)
 				console.log(state)
