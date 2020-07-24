@@ -2,10 +2,8 @@
 	<div>
 		<b-switch v-on:input="changeTheme" v-model="lightMode" passive-type="is-dark" type="is-warning"> </b-switch>
 		<router-link to="/about">about</router-link>
-		<div>
-			<NetworkGraph :nodes="state.nodes" :links="state.links" :options="options" :nodeClick="onNodeClick" :linkClick="onLinkClick" />
-		</div>
-
+		<d3network :nodes="state.nodes" :links="state.links" />
+{{state}}
 		<div class="columns">
 			<div class="column is-6">
 				<b-collapse class="card edit-network-card" animation="slide" aria-id="contentIdForA11y3">
@@ -42,21 +40,19 @@
 
 <script lang="ts">
 	import Vue from 'vue';
+
 	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch } from '@vue/composition-api';
 
-	import NetworkGraph from '@/components/NetworkGraph.vue';
-	import SideBar from '@/components/SideBar.vue';
 	import useNetworkGraph from '@/composables/useNetworkGraph';
 	import useTheme from '@/composables/useTheme';
-
 	import { ISavedNetwork } from '@/models/apiRespone.ts';
 	// import { DialogProgrammatic as Dialog } from 'buefy'
+	import d3network from '@/components/d3network.vue';
 
 	export default defineComponent({
 		name: 'Home',
 		setup(props, { root }) {
-
-		let currentNetwork: ISavedNetwork;
+			let currentNetwork: ISavedNetwork;
 
 			onMounted(() => {
 				// set the theme
@@ -76,10 +72,7 @@
 			const { lightMode, changeTheme } = useTheme();
 			return { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, save, get, lightMode, changeTheme };
 		},
-		components: {
-			NetworkGraph,
-			SideBar,
-		},
+		components: { d3network },
 	});
 </script>
 

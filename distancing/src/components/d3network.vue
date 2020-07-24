@@ -1,16 +1,6 @@
 <template>
 	<div>
 		<svg id="network"></svg>
-		<!-- <h1>Current Selected Node {{currentNodeSelected}}</h1> -->
-		<button @click="addNode()">add node</button>
-		<button @click="addLink()">add link</button>
-		<hr />
-		{{ state.nodes }}
-		<h3>links</h3>
-		{{ state.links.length }}
-		<hr />
-		<h3>props</h3>
-		{{ nodes_array }}
 		<button @click="stop()">stop</button>
 		<button @click="restart()">restart</button>
 	</div>
@@ -20,89 +10,34 @@
 	import * as d3 from 'd3';
 
 	import Vue from 'vue';
-	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch } from '@vue/composition-api';
+	import { defineComponent, onMounted, watch } from '@vue/composition-api';
+	import { Node, Link } from '@/models/networkgraph';
 
 	export default defineComponent({
 		name: 'd3network',
 		props: {
-			nodes_array: Array as () => Array<any>,
-			links_array: Array as () => Array<any>,
+			nodes: Array as () => Array<Node>,
+			links: Array as () => Array<Link>,
 			nodeClick: Function,
 			linkClick: Function,
 		},
 		setup(props, { root }) {
-			interface State {
-				nodes: any[];
-				links: any[];
-			}
-
-			const state = reactive<State>({
-				nodes: [
-					{ id: 0, name: 'Finkler', sex: 'F' },
-					{ id: 1, name: 'Peter', sex: 'M' },
-					{ id: 2, name: 'Ashley', sex: 'F' },
-					{ id: 3, name: 'Cricket', sex: 'M' },
-				],
-				links: [
-					{ source: 0, target: 2 },
-					{ source: 1, target: 0 },
-				],
-			});
-			const currentMaxId: any = computed(() => {
-				let nodeArray: any[] = [...state.nodes]
-				return Math.max(...nodeArray.map(n => n.id));
-			});
-			const currentMaxIdx: any = computed(() => {
-				let nodeArray: any[] = [...state.nodes]
-				return Math.max(...nodeArray.map(n => n.index));
-			});
-			interface INodeObjectx {
-				id: number;
-				index?: number;
-				name?: string;
-				// vx?: number;
-				// vy?: number;
-				// x?: number;
-				// y?: number;
-				sex?: string;
-			}
-			const addNode = (): any => {
-				let newNodeToAdd: INodeObjectx = {
-					id: currentMaxId.value + 1,
-					sex: 'F',
-					name: `node-${currentMaxId.value + 1}`,
-					// vx: 10.5,
-					// vy: 11.2,
-				};
-				state.nodes.push(newNodeToAdd);
-			};
-
-			interface ISimpleLink {
-				source: number;
-				target: number;
-			}
-
-			const addLink = () => {
-				const link: ISimpleLink = {
-					source: currentMaxIdx.value - 1,
-					target: currentMaxIdx.value,
-				};
-				state.links.push(link);
-			};
-
+			
 			var width = 600;
 			var height = 600;
 			var radius = 10;
-			var simulation = d3.forceSimulation().nodes(state.nodes); //.id(function(d) { return d.id; });;
-			var link_force = d3.forceLink(state.links).id(function(d) {
+			var simulation = d3.forceSimulation().nodes(props.nodes); //.id(function(d) { return d.id; });;
+			var link_force = d3.forceLink(props.links).id(function(d: any) {
 				return d.index;
 			});
 			var charge_force = d3.forceManyBody().strength(-30);
 			var center_force = d3.forceCenter(width / 2, height / 2);
 
 			const renderChart = () => {
-	        d3.select('svg').selectAll('*').remove();
-			simulation
+				d3.select('svg')
+					.selectAll('*')
+					.remove();
+				simulation
 					.force('charge_force', charge_force)
 					.force('center_force', center_force)
 					.force('links', link_force);
@@ -113,7 +48,6 @@
 					.attr('height', height);
 				//set up the simulation and add forces
 
-				
 				//add tick instructions:
 				simulation.on('tick', tickActions);
 
@@ -125,37 +59,35 @@
 					.append('g')
 					.attr('class', 'links')
 					.selectAll('line')
-					.data(state.links)
+					.data(props.links)
 					.enter()
 					.append('line')
 					.attr('stroke-width', 2)
 					.attr('class', 'link');
 
-				//draw circles for the nodes
 				var node = g
 					.append('g')
 					.attr('class', 'nodes')
 					.selectAll('circle')
-					.data(state.nodes)
+					.data(props.nodes)
 					.enter()
 					.append('circle')
 					.attr('r', radius);
 				//.attr('fill', circleColor);
 
-				node.on('click', function(d) {
+				node.on('click', function(d: any) {
 					console.log(d);
 					// return d.descendants().splice(1).indexOf(e) > -1
 				});
 
-				// This is the label for each node
 				var text = g
 					.selectAll('text')
-					.data(state.nodes)
+					.data(props.nodes)
 					.enter()
 					.append('text')
 					.attr('dx', 40)
 					.attr('dy', 0.25)
-					.text(function(d) {
+					.text(function(d: any) {
 						return d.name;
 					})
 					.attr('text-anchor', 'middle');
@@ -165,44 +97,41 @@
 
 				function tickActions() {
 					//update circle positions each tick of the simulation
-					node.attr('cx', function(d) {
+					node.attr('cx', function(d: any) {
 						return d.x;
-					}).attr('cy', function(d) {
+					}).attr('cy', function(d: any) {
 						return d.y;
 					});
 
-					link.attr('x1', function(d) {
+					link.attr('x1', function(d: any) {
 						return d.source.x;
 					})
-						.attr('y1', function(d) {
+						.attr('y1', function(d: any) {
 							return d.source.y;
 						})
-						.attr('x2', function(d) {
+						.attr('x2', function(d: any) {
 							return d.target.x;
 						})
-						.attr('y2', function(d) {
+						.attr('y2', function(d: any) {
 							return d.target.y;
 						});
 
-					text.attr('x', function(d) {
+					text.attr('x', function(d: any) {
 						return d.x;
-					}).attr('y', function(d) {
+					}).attr('y', function(d: any) {
 						return d.y;
 					});
-					simulation.restart()
-					simulation.tick()
+					simulation.restart();
+					simulation.tick();
 				}
-				//Drag functions
-				//d is the node
-				function drag_start(d) {
+				function drag_start(d: any) {
 					if (!d3.event.active) {
 						simulation.alphaTarget(0.3).restart();
 					}
 					d.fx = d.x;
 					d.fy = d.y;
 				}
-				//make sure you can't drag the circle outside the box
-				function drag_drag(d) {
+				function drag_drag(d: any) {
 					d.fx = d3.event.x;
 					d.fy = d3.event.y;
 				}
@@ -211,7 +140,6 @@
 					d.fx = null;
 					d.fy = null;
 				}
-				//Zoom functions
 				function zoom_actions() {
 					g.attr('transform', d3.event.transform);
 				}
@@ -242,32 +170,28 @@
 			});
 
 			watch(
-				() => state.nodes,
+				() => props.nodes,
 				(newNodes, prevNodes) => {
 					simulation.nodes(newNodes);
-					//simulation.force("link").links(state.links);
-					renderChart()
+					renderChart();
 					simulation.alpha(1).restart();
-					console.log(state.nodes);
 				}
 			);
 			watch(
-				() => state.links,
+				() => props.links,
 				(newLinks, prevLinks) => {
-					//simulation.nodes(state.nodes);
-					//simulation.force("link").links(newLinks);
-					d3.forceLink(newLinks).id(function(d) {return d.index;});				
+					d3.forceLink(newLinks).id(function(d) {
+						return d.index;
+					});
 					simulation.alpha(1).restart();
-					renderChart()
-					console.log(state.links);
+					renderChart();
 				}
 			);
-		
-		const stop = () => simulation.alphaTarget(0.1).stop();
-		const restart = () =>simulation.alphaTarget(0.1).restart();
 
+			const stop = () => simulation.alphaTarget(0.1).stop();
+			const restart = () => simulation.alphaTarget(0.1).restart();
 
-			return { addNode, addLink, state, renderChart, restart, stop,currentMaxId ,currentMaxIdx};
+			return { renderChart };
 		},
 	});
 </script>

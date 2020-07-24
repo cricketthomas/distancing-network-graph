@@ -46,11 +46,12 @@ interface Node {
     index?: number;
     name?: string;
     _color?: string;
+    sex?: string;
 }
 interface Link {
-    sid: number;
-    tid: number;
-    _color?: string;
+    source: number;
+    target: number;
+    //_color?: string;
 }
 interface Option {
     force: number;

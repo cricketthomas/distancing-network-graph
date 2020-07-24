@@ -1,38 +1,90 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-    <button @click="removeNode()">pop node from parent</button>
-    <router-link to="/">home</router-link>
-    <d3network :nodes_array="stateTest.nodes_array"/>
-  </div>
+	<div class="about">
+		<h1>This is an about page</h1>
+		<button @click="removeNode()">pop node from parent</button>
+		<router-link to="/">home</router-link>
+		<d3network :nodes="state.nodes" :links="state.links" />
+    	<!-- <h1>Current Selected Node {{currentNodeSelected}}</h1> -->
+		<button @click="addNode()">add node</button>
+		<button @click="addLink()">add link</button>
+		<hr />
+		{{ state.nodes }}
+		<h3>links</h3>
+		{{ state.links.length }}
+		<hr />
+	</div>
 </template>
 
-
 <script lang="ts">
-import Vue from 'vue';
-import { defineComponent,reactive } from '@vue/composition-api';
-import d3network from '@/components/d3network.vue';
+	import Vue from 'vue';
+	import { defineComponent, reactive, computed } from '@vue/composition-api';
+	import d3network from '@/components/d3network.vue';
 
-export default defineComponent({
-    name: 'About',
-    setup(props, { root }) {
+	export default defineComponent({
+		name: 'About',
+		setup(props, { root }) {
+			interface State {
+				nodes: any[];
+				links: any[];
+			}
 
-      const stateTest = reactive({
-        nodes_array: [
+			const state = reactive<State>({
+				nodes: [
 					{ id: 0, name: 'Finkler', sex: 'F' },
 					{ id: 1, name: 'Peter', sex: 'M' },
 					{ id: 2, name: 'Ashley', sex: 'F' },
-        ]})
-        
-  const removeNode = () =>{
-    stateTest.nodes_array.pop()
-  };
-    return {stateTest,removeNode }
-    },
-    components: { d3network },
-});
+					{ id: 3, name: 'Cricket', sex: 'M' },
+				],
+				links: [
+					{ source: 0, target: 2 },
+					{ source: 1, target: 0 },
+				],
+			});
+			const currentMaxId: any = computed(() => {
+				let nodeArray: any[] = [...state.nodes];
+				return Math.max(...nodeArray.map((n) => n.id));
+			});
+			const currentMaxIdx: any = computed(() => {
+				let nodeArray: any[] = [...state.nodes];
+				return Math.max(...nodeArray.map((n) => n.index));
+			});
+			interface INodeObject {
+				id: number;
+				index?: number;
+				name?: string;
+				vx?: number;
+				vy?: number;
+				x?: number;
+				y?: number;
+				sex?: string;
+			}
+
+			const addNode = (): any => {
+				let newNodeToAdd: INodeObject = {
+					id: currentMaxId.value + 1,
+					sex: 'F',
+					name: `node-${currentMaxId.value + 1}`,
+				};
+				state.nodes.push(newNodeToAdd);
+			};
+
+			interface ISimpleLink {
+				source: number;
+				target: number;
+			}
+
+			const addLink = () => {
+				const link: ISimpleLink = {
+					source: currentMaxIdx.value - 1,
+					target: currentMaxIdx.value,
+				};
+				state.links.push(link);
+			};
+
+			return { addNode, addLink, state, currentMaxId, currentMaxIdx };
+		},
+		components: { d3network },
+	});
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

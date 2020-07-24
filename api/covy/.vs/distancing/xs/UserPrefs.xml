@@ -1,0 +1,25 @@
+﻿<Properties StartupConfiguration="{3BFA2651-54C1-4DF4-8FC3-21DA87F9E545}|Default">
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="distancing" expanded="True">
+            <Node name="distancing" expanded="True">
+              <Node name="Controllers" expanded="True">
+                <Node name="NetworkController.cs" selected="True" />
+              </Node>
+              <Node name="Infastructure" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.distancing PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
