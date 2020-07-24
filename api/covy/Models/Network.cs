@@ -7,54 +7,55 @@ namespace distancing.Models {
     public class Network {
         public Network() {
         }
-        public class NodeLinks {
-            public IList<Node> Nodes { get; set; }
-            public IList<Link>? Links { get; set; }
-        }
-
 
         public class Node {
             public int id { get; set; }
             public string name { get; set; }
+            public string sex { get; set; }
+            public int index { get; set; }
             //public double x { get; set; }
             //public double y { get; set; }
-            public int index { get; set; }
             //public double vy { get; set; }
             //public double vx { get; set; }
-            public string _color { get; set; }
+
         }
+
         public class Source {
             public int id { get; set; }
             public string name { get; set; }
+            public string sex { get; set; }
+            public int index { get; set; }
             //public double x { get; set; }
             //public double y { get; set; }
-            public int index { get; set; }
             //public double vy { get; set; }
             //public double vx { get; set; }
-            public string _color { get; set; }
+
         }
 
         public class Target {
             public int id { get; set; }
             public string name { get; set; }
-            //  public double x { get; set; }
-            //   public double y { get; set; }
+            public string sex { get; set; }
             public int index { get; set; }
-            //  public double vy { get; set; }
-            public double vx { get; set; }
-        }//
+            //public double x { get; set; }
+            //public double y { get; set; }
+            //public double vy { get; set; }
+            //public double vx { get; set; }
 
-        public class Link {
-            public int source { get; set; }
-            public int target { get; set; }
-            //public string _color { get; set; }
-            //public Source source { get; set; }
-            //public Target target { get; set; }
-            public string id { get; set; }
-            public int index { get; set; }
         }
 
+        public class Link {
+            public Source source { get; set; }
+            public Target target { get; set; }
+            public int index { get; set; }
 
+        }
+
+        public class NodeLinks {
+            public List<Node>? nodes { get; set; }
+            public List<Link>? links { get; set; }
+
+        }
 
         public class NetworkGraph {
             [Key]

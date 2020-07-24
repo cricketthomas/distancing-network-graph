@@ -8,10 +8,6 @@
 		<button @click="addNode()">add node</button>
 		<button @click="addLink()">add link</button>
 		<hr />
-		{{ state.nodes }}
-		<h3>links</h3>
-		{{ state.links.length }}
-		<hr />
 	</div>
 </template>
 
@@ -68,10 +64,6 @@
 				state.nodes.push(newNodeToAdd);
 			};
 
-			interface ISimpleLink {
-				source: number;
-				target: number;
-			}
 
 			const addLink = () => {
 				const link: ISimpleLink = {

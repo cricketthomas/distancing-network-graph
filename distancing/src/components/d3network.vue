@@ -10,7 +10,7 @@
 	import * as d3 from 'd3';
 
 	import Vue from 'vue';
-	import { defineComponent, onMounted, watch } from '@vue/composition-api';
+	import { defineComponent, onMounted, watch, watchEffect } from '@vue/composition-api';
 	import { Node, Link } from '@/models/networkgraph';
 
 	export default defineComponent({
@@ -187,6 +187,16 @@
 					renderChart();
 				}
 			);
+
+			watchEffect(()=>{
+				simulation.stop();
+				d3.forceLink(props.links).id(function(d) {
+					return d.index;
+				});
+				simulation.nodes(props.nodes);
+				renderChart();
+
+			})
 
 			const stop = () => simulation.alphaTarget(0.1).stop();
 			const restart = () => simulation.alphaTarget(0.1).restart();

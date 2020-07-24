@@ -3,7 +3,17 @@
 		<b-switch v-on:input="changeTheme" v-model="lightMode" passive-type="is-dark" type="is-warning"> </b-switch>
 		<router-link to="/about">about</router-link>
 		<d3network :nodes="state.nodes" :links="state.links" />
-{{state}}
+
+	<pre>
+		{{ state.nodes }}
+
+		</pre>
+
+		<h3>links</h3>
+		<pre>
+			{{ state.links }}
+		</pre>
+		<hr />
 		<div class="columns">
 			<div class="column is-6">
 				<b-collapse class="card edit-network-card" animation="slide" aria-id="contentIdForA11y3">
@@ -60,7 +70,6 @@
 					state.isNewNetwork = true;
 				} else {
 					let networkId = get(root.$route.params.networkId);
-					console.log(networkId);
 				}
 			});
 			// const cardModal = () => {

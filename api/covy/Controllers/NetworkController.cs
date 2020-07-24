@@ -36,7 +36,7 @@ namespace distancing.Controllers {
 
         [HttpPost]
         public async Task<ActionResult<NetworkGraph>> Post([FromBody] NodeLinks NodeLinks) {
-            if (NodeLinks.Links != null) {
+            if (NodeLinks.links != null) {
                 var newNetworkGraph = new NetworkGraph {
                     schema = JsonSerializer.Serialize(NodeLinks),
                     shortId = Guid.NewGuid().ToString().Substring(0, 8)

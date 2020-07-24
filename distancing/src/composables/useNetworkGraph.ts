@@ -55,7 +55,7 @@ export default function () {
 			nodes: state.nodes,
 			links: state.links,
 		};
-		console.log(datum)
+		console.log(JSON.stringify(datum))
 		if (!state.shortId && state.isNewNetwork) {
 			let path = window.location.pathname
 			let route: string = '';
@@ -73,17 +73,18 @@ export default function () {
 				.catch(err => console.log(err))
 		}
 	};
-
-
+	interface ISimpleLink {
+		source: number;
+		target: number;
+	}
 	const get = async (networkId: string) => {
 		return await axios.get(`${process.env.VUE_APP_API_BASEURL}/Network?shortId=${networkId}`)
 			.then((res) => {
+				let formattedLinks: Link[] =[];
 				state.shortId = router.history.current.params.networkId;
 				let schema = JSON.parse(res.data.schema)
-				console.log(schema)
-				console.log(state)
-				state.nodes = schema.Nodes;
-				state.links = schema.Links;
+				state.links = schema.links;
+				state.nodes = schema.nodes;
 				return res.data
 			})
 			.catch((err) => console.log(err));
