@@ -1,4 +1,4 @@
-import { INodeObject, ILinkObject, Node, Link, Option, State } from '@/models/networkgraph';
+import { INodeObject, ILinkObject, Node, Link, ISimpleLink } from '@/models/networkgraph';
 import { reactive, computed } from '@vue/composition-api';
 import useState from '@/composables/useState';
 import axios from 'axios';
@@ -12,19 +12,14 @@ export default function () {
 		name: '',
 		_color: null,
 	});
-	const options = reactive({
-		force: 3000,
-		nodeSize: 20,
-		nodeLabels: true,
-		linkWidth: 5,
-	});
-	const onNodeClick = (event: any, NodeObject: INodeObject): void => {
-		state.currentNode = NodeObject.index;
-		console.log(NodeObject);
+
+	const onNodeClick = (NodeObject: INodeObject): void => {
+		//s//tate.currentNode = NodeObject.index;
+		console.log('node', NodeObject);
 	};
-	const onLinkClick = (event: any, LinkObject: ILinkObject): void => {
-		state.currentLink = LinkObject.index;
-		console.log(LinkObject);
+	const onLinkClick = (LinkObject: ILinkObject): void => {
+		//state.currentLink = LinkObject.index;
+		console.log('linlk', LinkObject);
 	};
 	const addNodeWithLink = (): any => {
 		
@@ -86,10 +81,7 @@ export default function () {
 				.catch(err => console.log(err))
 		}
 	};
-	interface ISimpleLink {
-		source: number;
-		target: number;
-	}
+
 	const get = async (networkId: string) => {
 		return await axios.get(`${process.env.VUE_APP_API_BASEURL}/Network?shortId=${networkId}`)
 			.then((res) => {
@@ -131,7 +123,6 @@ export default function () {
 		onLinkClick,
 		addNodeWithLink,
 		newNode,
-		options,
 		get,
 		save
 	};

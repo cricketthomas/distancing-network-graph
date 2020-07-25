@@ -1,50 +1,38 @@
 <template>
 	<div>
-		<b-switch v-on:input="changeTheme" v-model="lightMode" passive-type="is-dark" type="is-warning"> </b-switch>
+		<label for="theme">
+			{{ lightMode == true ? 'dark': 'light'}}
+			<input type="checkbox" v-on:input="changeTheme" v-model="lightMode" title="theme"/>
+		</label>
 		<router-link to="/about">about</router-link>
-		<d3network :nodes="state.nodes" :links="state.links" />
+		<d3network :nodes="state.nodes" :links="state.links" @nodeClick="onNodeClick(...arguments)" @linkClick="onLinkClick(...arguments)" />
+		<!--:nodeClick="onNodeClick" -->
 		<button @click="addLink">add link</button>
-	<pre>
+		<input type="checkbox" name="view data" v-model="viewData"/>
+		<div v-if="viewData">
+			<pre>
 		{{ state.nodes }}
-
-		</pre>
-
-		<h3>links</h3>
-		<pre>
+		</pre
+			>
+			<h3>links</h3>
+			<pre>
 			{{ state.links }}
-		</pre>
-		<hr />
-		<div class="columns">
-			<div class="column is-6">
-				<b-collapse class="card edit-network-card" animation="slide" aria-id="contentIdForA11y3">
-					<div slot="trigger" slot-scope="props" class="card-header" role="button" aria-controls="contentIdForA11y3">
-						<p class="card-header-title"><span v-if="state.isNewNetwork">Create a network</span><span v-else>Edit network</span></p>
-						<a class="card-header-icon">
-							<b-icon :icon="props.open ? 'menu-down' : 'menu-up'"> </b-icon>
-						</a>
-					</div>
-					<div class="card-content">
-						<div class="content">
-							<div class="control">
-								Select a node to create a new connection.
-								<h5>new node id: {{ currentMaxId }}</h5>
-								<h5>Link to {{ state.currentNode }}</h5>
-								<label for="name">
-									Node Name:
-									<input class="input is-small" type="text" v-model="newNode.name" />
-								</label>
-								<button class="button is-small" @click="addNodeWithLink">Add new node</button>
-							</div>
-						</div>
-					</div>
-					<footer class="card-footer">
-						<a class="card-footer-item" @click="save">Save</a>
-						<a class="card-footer-item">Edit</a>
-						<a class="card-footer-item">Share</a>
-					</footer>
-				</b-collapse>
-			</div>
+		</pre
+			>
 		</div>
+		<hr />
+
+		Select a node to create a new connection.
+		<h5>new node id: {{ currentMaxId }}</h5>
+		<h5>Link to {{ state.currentNode }}</h5>
+		<label for="name">
+			Node Name:
+			<input class="input is-small" type="text" v-model="newNode.name" />
+		</label>
+		<button @click="addNodeWithLink">Add new node</button>
+
+		<button class="card-footer-item" @click="save">Save</button>
+		<button class="card-footer-item">Share</button>
 	</div>
 </template>
 
@@ -63,7 +51,7 @@
 		name: 'Home',
 		setup(props, { root }) {
 			let currentNetwork: ISavedNetwork;
-
+			let viewData = ref(false);
 			onMounted(() => {
 				// set the theme
 				if (root.$route.params.networkId === 'new'.toLowerCase()) {
@@ -77,9 +65,9 @@
 			// 	context.root.$buefy.dialog.alert('hello');
 			// };
 
-			const { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink,addLink, newNode, options, get, save } = useNetworkGraph();
+			const { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, addLink, newNode, options, get, save } = useNetworkGraph();
 			const { lightMode, changeTheme } = useTheme();
-			return { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, save, get, lightMode, changeTheme,addLink };
+			return { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, save, get, lightMode, changeTheme, addLink, viewData };
 		},
 		components: { d3network },
 	});

@@ -12,6 +12,7 @@
 	import Vue from 'vue';
 	import { defineComponent, onMounted, watch, watchEffect } from '@vue/composition-api';
 	import { Node, Link } from '@/models/networkgraph';
+	import { mouse } from 'd3';
 
 	export default defineComponent({
 		name: 'd3network',
@@ -21,15 +22,15 @@
 			nodeClick: Function,
 			linkClick: Function,
 		},
-		setup(props, { root }) {
-			var width = 600;
+		setup(props, ctx) {
+			var width = 800;
 			var height = 600;
 			var radius = 10;
 			var simulation = d3.forceSimulation().nodes(props.nodes); //.id(function(d) { return d.id; });;
 			var link_force = d3.forceLink(props.links).id(function(d: any) {
 				return d.index;
 			});
-			var charge_force = d3.forceManyBody().strength(-30);
+			var charge_force = d3.forceManyBody().strength(-80);
 			var center_force = d3.forceCenter(width / 2, height / 2);
 
 			const renderChart = () => {
@@ -45,15 +46,11 @@
 					.select('svg')
 					.attr('width', width)
 					.attr('height', height);
-				//set up the simulation and add forces
 
-				//add tick instructions:
 				simulation.on('tick', tickActions);
 
-				//add encompassing group for the zoom
 				var g = svg.append('g').attr('class', 'nodes_links');
 
-				//draw lines for the links
 				var link = g
 					.append('g')
 					.attr('class', 'links')
@@ -63,6 +60,10 @@
 					.append('line')
 					.attr('stroke-width', 2)
 					.attr('class', 'link');
+
+				link.on('click', function(d: any) {
+					ctx.emit('linkClick', d);
+				});
 
 				var node = g
 					.append('g')
@@ -75,8 +76,7 @@
 				//.attr('fill', circleColor);
 
 				node.on('click', function(d: any) {
-					console.log(d);
-					// return d.descendants().splice(1).indexOf(e) > -1
+					ctx.emit('nodeClick', d);
 				});
 
 				var text = g
@@ -86,10 +86,12 @@
 					.append('text')
 					.attr('dx', 40)
 					.attr('dy', 0.25)
+					.attr('class', 'linkText')
 					.text(function(d: any) {
 						return d.name;
 					})
 					.attr('text-anchor', 'middle');
+
 				// .attr('group', function(d) {
 				// 	return d.group;
 				// });
@@ -173,7 +175,10 @@
 				(newNodes, prevNodes) => {
 					simulation.nodes(newNodes);
 					renderChart();
-					//simulation.alpha(1).restart();
+					simulation.alpha(.01).restart();
+					//simulation.restart();
+
+
 				}
 			);
 			watch(
@@ -182,8 +187,7 @@
 					link_force = d3.forceLink(newLinks).id(function(d) {
 						return d.id;
 					});
-					simulation.alpha(1).restart();
-					simulation.alphaTarget(0.1).restart();
+					simulation.alpha(.01).restart();
 					renderChart();
 				}
 			);
@@ -199,28 +203,11 @@
 			// })
 
 			const stop = () => simulation.alphaTarget(0.1).stop();
-			const restart = () => simulation.alphaTarget(0.1).restart();
+			const restart = () => simulation.alpha(1);
 
 			return { renderChart, stop, restart };
 		},
 	});
 </script>
 
-<style lang="scss">
-	.links line {
-		stroke: navy;
-		stroke-opacity: 0.6;
-	}
-
-	.nodes circle {
-		stroke: rgba(0, 0, 0, 0.301);
-		stroke-opacity: 0.5;
-		stroke-width: 5px;
-		fill: gray;
-	}
-	svg {
-		text-align: center;
-		width: 600px;
-		height: 600px;
-	}
-</style>
+<style lang="scss"></style>

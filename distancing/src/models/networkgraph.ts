@@ -39,6 +39,10 @@ interface TargetSource {
     x: number;
     y: number;
 }
+interface ISimpleLink {
+    source: number;
+    target: number;
+}
 
 interface Node {
     id: number;
@@ -50,14 +54,8 @@ interface Node {
 interface Link {
     source: number;
     target: number;
-    //_color?: string;
 }
-interface Option {
-    force: number;
-    nodeSize: number;
-    nodeLabels: boolean;
-    linkWidth: number;
-}
+
 interface State {
     currentNode: number;
     currentLink: number;
@@ -68,4 +66,4 @@ interface State {
 }
 
 
-export { INodeObject, ILinkObject, Node, Link, Option, State };
+export { INodeObject, ILinkObject, Node, Link, State, ISimpleLink };

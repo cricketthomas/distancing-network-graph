@@ -1,6 +1,3 @@
-@import 'https://fonts.googleapis.com/css?family=Tangerine:bold,bolditalic|Inconsolata:italic|Droid+Sans';
-@import '~bulma/sass/utilities/_all';
-
 #app {
 	width: 100%;
 	height: 100vh;
@@ -17,9 +14,8 @@ html {
 input[type='text'] {
 	border-radius: 0.5em !important;
 }
-button{
-  	border-radius: 0.5em !important;
-
+button {
+	border-radius: 0.5em !important;
 }
 
 .card {
@@ -64,6 +60,28 @@ svg {
 	border-radius: 0.5em;
 }
 
+/* D3 Nodes */
+
+.links line {
+	stroke: var(--link-stroke-color);
+	stroke-opacity: 0.6;
+}
+.links:hover line {
+	stroke-width: 3px;
+	stroke-opacity: 0.6;
+}
+.nodes circle {
+	stroke: var(--node-stroke-color);
+	stroke-opacity: 0.5;
+	stroke-width: 5px;
+	fill: var(--node-color);
+}
+
+text {
+	fill: var(--font-color);
+}
+/* D3 Nodes */
+
 // Set your colors
 :root {
 	--primary-color: #302ae6;
@@ -71,19 +89,22 @@ svg {
 	--font-color: #424242;
 	--bg-color: #fff;
 	--heading-color: #292922;
-
+	--node-color: gray;
+	--node-stroke-color: rgba(0, 0, 0, 0.301);
+	--link-stroke-color: black;
 	/* Themes */
 	[data-theme='dark'] {
-		--primary-color: #9a97f3;
+		--primary-color: #b8b8cc;
 		--secondary-color: #818cab;
 		--font-color: #e1e1ff;
 		--bg-color: #161625;
 		--heading-color: #818cab;
 		--card-secondary-color: #fff;
 		--card-bg-color: #1f2424;
+		--node-color: #b8b8b8;
+		--node-stroke-color: rgba(255, 255, 255);
+		--link-stroke-color: whitesmoke;
 	}
 }
 
 // Import Bulma and Buefy styles
-@import '~bulma';
-@import '~buefy/src/scss/buefy';
