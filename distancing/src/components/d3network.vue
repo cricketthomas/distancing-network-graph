@@ -22,7 +22,6 @@
 			linkClick: Function,
 		},
 		setup(props, { root }) {
-			
 			var width = 600;
 			var height = 600;
 			var radius = 10;
@@ -180,28 +179,29 @@
 			watch(
 				() => props.links,
 				(newLinks, prevLinks) => {
-					d3.forceLink(newLinks).id(function(d) {
-						return d.index;
+					link_force = d3.forceLink(newLinks).id(function(d) {
+						return d.id;
 					});
-					//simulation.alpha(1).restart();
+					simulation.alpha(1).restart();
+					simulation.alphaTarget(0.1).restart();
 					renderChart();
 				}
 			);
 
-			watchEffect(()=>{
-				simulation.stop();
-				d3.forceLink(props.links).id(function(d) {
-					return d.index;
-				});
-				simulation.nodes(props.nodes);
-				renderChart();
-
-			})
+			// watchEffect(()=>{
+			// 	simulation.stop();
+			// 	d3.forceLink(props.links).id(function(d) {
+			// 		return d.id;
+			// 	});
+			// 	simulation.nodes(props.nodes);
+			// 	renderChart();
+			// 	simulation.alphaTarget(0.1).restart();
+			// })
 
 			const stop = () => simulation.alphaTarget(0.1).stop();
 			const restart = () => simulation.alphaTarget(0.1).restart();
 
-			return { renderChart,stop, restart };
+			return { renderChart, stop, restart };
 		},
 	});
 </script>
