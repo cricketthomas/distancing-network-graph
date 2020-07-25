@@ -1,6 +1,5 @@
 interface INodeObject {
     id: number;
-    index: number;
     name?: string;
     vx?: number;
     vy?: number;

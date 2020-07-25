@@ -36,14 +36,7 @@
 					{ source: 1, target: 0 },
 				],
 			});
-			const currentMaxId: any = computed(() => {
-				let nodeArray: any[] = [...state.nodes];
-				return Math.max(...nodeArray.map((n) => n.id));
-			});
-			const currentMaxIdx: any = computed(() => {
-				let nodeArray: any[] = [...state.nodes];
-				return Math.max(...nodeArray.map((n) => n.index));
-			});
+			
 			interface INodeObject {
 				id: number;
 				index?: number;
@@ -54,7 +47,14 @@
 				y?: number;
 				sex?: string;
 			}
-
+			const currentMaxId: any = computed(() => {
+				let nodeArray: any[] = [...state.nodes];
+				return Math.max(...nodeArray.map((n) => n.id));
+			});
+			const currentMaxIdx: any = computed(() => {
+				let nodeArray: any[] = [...state.nodes];
+				return Math.max(...nodeArray.map((n) => n.index));
+			});
 			const addNode = (): any => {
 				let newNodeToAdd: INodeObject = {
 					id: currentMaxId.value + 1,

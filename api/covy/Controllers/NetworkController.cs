@@ -36,9 +36,11 @@ namespace distancing.Controllers {
 
         [HttpPost]
         public async Task<ActionResult<NetworkGraph>> Post([FromBody] NodeLinks NodeLinks) {
-            if (NodeLinks.links != null) {
+            if (NodeLinks.nodes != null) {
+                JsonSerializerOptions options = new JsonSerializerOptions();
+                options.WriteIndented = true;
                 var newNetworkGraph = new NetworkGraph {
-                    schema = JsonSerializer.Serialize(NodeLinks),
+                    schema = JsonSerializer.Serialize(NodeLinks, options),
                     shortId = Guid.NewGuid().ToString().Substring(0, 8)
                 };
                 await _db.NetworkGraph.AddAsync(newNetworkGraph);
@@ -54,16 +56,16 @@ namespace distancing.Controllers {
         }
 
         [HttpPut("{shortId}")]
-        public async Task<ActionResult<NetworkGraph>> Update([FromBody] NetworkGraph networkGraph, string shortId) {
+        public async Task<ActionResult<NetworkGraph>> Update([FromBody] updateNetworkGraph networkGraph, string shortId) {
 
             var networkToUpdate = await _db.NetworkGraph.FirstOrDefaultAsync(n => n.shortId == shortId);
             if (null != networkToUpdate) {
                 networkToUpdate.networkName = networkGraph.networkName;
-                networkToUpdate.schema = networkGraph.schema;
+                networkToUpdate.schema = JsonSerializer.Serialize(networkGraph.schema);
                 await _db.SaveChangesAsync();
 
-                var datum = _db.NetworkGraph.FirstOrDefaultAsync(n => n.shortId == shortId);
-                return Ok(datum);
+                //var datum = _db.NetworkGraph.FirstOrDefaultAsync(n => n.shortId == shortId);
+                return Ok(networkToUpdate);
 
             }
             return NotFound($"Id of {shortId} was not found");

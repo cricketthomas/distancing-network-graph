@@ -7,12 +7,6 @@ export default function () {
 
 	const { state } = useState();
 
-
-	const currentMaxId: any = computed(() => {
-		// let nodeArray: INodeObject[] = [...state.nodes]
-		// return Math.max(...nodeArray.map(n => n.index));
-		return state.nodes.length;
-	});
 	const newNode = reactive({
 		id: null,
 		name: '',
@@ -33,19 +27,34 @@ export default function () {
 		console.log(LinkObject);
 	};
 	const addNodeWithLink = (): any => {
-		let newNodeToAdd: Node = {
+		
+		let newNodeToAdd: INodeObject = {
 			id: currentMaxId.value + 1,
-			name: newNode.name,
-		};
-		let newLink: Link = {
-			sid: currentMaxId.value + 1, //source/current ID
-			tid: state.currentNode + 1, //target
-			_color: 'red',
+			name: `node-${currentMaxId.value + 1}`,
 		};
 		state.nodes.push(newNodeToAdd);
-		state.links.push(newLink);
+		// let newNodeToAdd: Node = {
+		// 	id: currentMaxId.value + 1,
+		// 	name: newNode.name,
+		// };
+		// // let newLink: Link = {
+		// // 	sid: currentMaxId.value + 1, //source/current ID
+		// // 	tid: state.currentNode + 1, //target
+		// // 	_color: 'red',
+		// // };
+		// state.nodes.push(newNodeToAdd);
+		// //state.links.push(newLink);
 
-		console.log(newNodeToAdd);
+		// console.log(newNodeToAdd);
+	};
+
+
+	const addLink = () => {
+		const link: ISimpleLink = {
+			source: currentMaxIdx.value - 1,
+			target: currentMaxIdx.value,
+		};
+		state.links.push(link);
 	};
 
 
@@ -68,7 +77,11 @@ export default function () {
 				.catch((err) => console.log(err));
 			history.pushState(path, 'new', route)
 		} else {
-			await axios.put(`${process.env.VUE_APP_API_BASEURL}/Network/${state.shortId}`, datum)
+			let update = {
+				networkName: "",
+				schema: datum
+			}
+			await axios.put(`${process.env.VUE_APP_API_BASEURL}/Network/${state.shortId}`, update)
 				.then((res) => console.log("updated", res))
 				.catch(err => console.log(err))
 		}
@@ -83,14 +96,36 @@ export default function () {
 				let formattedLinks: Link[] =[];
 				state.shortId = router.history.current.params.networkId;
 				let schema = JSON.parse(res.data.schema)
-				state.links = schema.links;
+				schema.links.forEach(element => {
+					var x: ISimpleLink = { source: element.source.id, target: element.target.id };
+					formattedLinks.push(x)
+				});
+				state.links = formattedLinks;
 				state.nodes = schema.nodes;
 				return res.data
 			})
 			.catch((err) => console.log(err));
 	}
+
+	const currentMaxId: any = computed(() => {
+		let nodeArray: any[] = [...state.nodes];
+		return Math.max(...nodeArray.map((n) => n.id));
+	});
+	const currentMaxIdx: any = computed(() => {
+		let nodeArray: any[] = [...state.nodes];
+		return Math.max(...nodeArray.map((n) => n.index));
+	});
+	const addNode = (): any => {
+		let newNodeToAdd: INodeObject = {
+			id: currentMaxId.value + 1,
+			name: `node-${currentMaxId.value + 1}`,
+		};
+		state.nodes.push(newNodeToAdd);
+	};
+
 	return {
 		state,
+		addLink,
 		currentMaxId,
 		onNodeClick,
 		onLinkClick,

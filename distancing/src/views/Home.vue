@@ -3,7 +3,7 @@
 		<b-switch v-on:input="changeTheme" v-model="lightMode" passive-type="is-dark" type="is-warning"> </b-switch>
 		<router-link to="/about">about</router-link>
 		<d3network :nodes="state.nodes" :links="state.links" />
-
+		<button @click="addLink">add link</button>
 	<pre>
 		{{ state.nodes }}
 
@@ -77,9 +77,9 @@
 			// 	context.root.$buefy.dialog.alert('hello');
 			// };
 
-			const { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, get, save } = useNetworkGraph();
+			const { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink,addLink, newNode, options, get, save } = useNetworkGraph();
 			const { lightMode, changeTheme } = useTheme();
-			return { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, save, get, lightMode, changeTheme };
+			return { state, currentMaxId, onNodeClick, onLinkClick, addNodeWithLink, newNode, options, save, get, lightMode, changeTheme,addLink };
 		},
 		components: { d3network },
 	});

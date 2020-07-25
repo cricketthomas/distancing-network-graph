@@ -52,10 +52,17 @@ namespace distancing.Models {
         }
 
         public class NodeLinks {
-            public List<Node>? nodes { get; set; }
-            public List<Link>? links { get; set; }
+            public IList<Node> nodes { get; set; }
+            public IList<Link> links { get; set; }
 
         }
+
+        public class updateNetworkGraph {
+            public string networkName { get; set; }
+            public string shortId { get; set; }
+            public NodeLinks schema { get; set; }
+        }
+
 
         public class NetworkGraph {
             [Key]

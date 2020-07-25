@@ -9,8 +9,8 @@ using distancing.Infastructure.Data;
 namespace distancing.Migrations
 {
     [DbContext(typeof(NetworkContext))]
-    [Migration("20200627215419_NetworkName")]
-    partial class NetworkName
+    [Migration("20200725175237_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
