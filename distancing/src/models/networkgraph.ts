@@ -1,11 +1,12 @@
 interface INodeObject {
     id: number;
+    index?: number;
     name?: string;
     vx?: number;
     vy?: number;
     x?: number;
     y?: number
-    _color?: string;
+    sex?: string;
 }
 
 
@@ -13,15 +14,12 @@ interface INodeObject {
 interface ILinkObject {
     id: string;
     index: number;
-    sid: number;
-    tid: number;
-    _color: string;
     source: LinkSource;
     target: TargetSource;
 }
 
 interface LinkSource {
-    id: string;
+    id: number;
     index: number;
     name: string;
     vx: number;
@@ -31,7 +29,7 @@ interface LinkSource {
 }
 
 interface TargetSource {
-    id: string;
+    id: number;
     index: number;
     name: string;
     fx: number;

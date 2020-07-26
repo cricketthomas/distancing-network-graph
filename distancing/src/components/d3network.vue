@@ -18,12 +18,12 @@
 		name: 'd3network',
 		props: {
 			nodes: Array as () => Array<Node>,
-			links: Array as () => Array<Link>,
-			nodeClick: Function,
-			linkClick: Function,
+			links: Array as () => Array<Link>
+			// nodeClick: Function,
+			// linkClick: Function,
 		},
 		setup(props, ctx) {
-			var width = 800;
+			var width = 600;
 			var height = 600;
 			var radius = 10;
 			var simulation = d3.forceSimulation().nodes(props.nodes); //.id(function(d) { return d.id; });;
@@ -34,9 +34,7 @@
 			var center_force = d3.forceCenter(width / 2, height / 2);
 
 			const renderChart = () => {
-				d3.select('svg')
-					.selectAll('*')
-					.remove();
+				d3.select('svg').selectAll('*').remove();
 				simulation
 					.force('charge_force', charge_force)
 					.force('center_force', center_force)
@@ -145,7 +143,6 @@
 					g.attr('transform', d3.event.transform);
 				}
 
-				/** Functions **/
 				// function circleColor(d) {
 				// 	if (d.sex == 'M') {
 				// 		return 'blue';
@@ -163,7 +160,6 @@
 				drag_handler(node);
 				//add zoom capabilities
 				var zoom_handler = d3.zoom().on('zoom', zoom_actions);
-
 				zoom_handler(svg);
 			};
 			onMounted(() => {
@@ -204,8 +200,14 @@
 
 			const stop = () => simulation.alphaTarget(0.1).stop();
 			const restart = () => simulation.alpha(1);
+			const resetZoom = () => {
+					var svg = d3.select('.nodes_links')
+					d3.zoom().on('zoom', g.attr('transform', d3.event.transform))
+					d3.zoomIdentity.translate(0,0).scale(0.7);
 
-			return { renderChart, stop, restart };
+
+			}
+			return { renderChart, stop, restart,resetZoom};
 		},
 	});
 </script>

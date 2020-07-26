@@ -1,5 +1,5 @@
 import { INodeObject, ILinkObject, Node, Link, ISimpleLink } from '@/models/networkgraph';
-import { reactive, computed } from '@vue/composition-api';
+import { reactive, computed, ref } from '@vue/composition-api';
 import useState from '@/composables/useState';
 import axios from 'axios';
 import router from '@/router';
@@ -7,54 +7,53 @@ export default function () {
 
 	const { state } = useState();
 
-	const newNode = reactive({
-		id: null,
-		name: '',
-		_color: null,
+	const _new = reactive({
+		nodeName: null,
+		linkType: 'to',
+		linkFrom: { name: null, index: null},
+		linkTo: { name: null, index: null },
 	});
 
+
 	const onNodeClick = (NodeObject: INodeObject): void => {
-		//s//tate.currentNode = NodeObject.index;
-		console.log('node', NodeObject);
+		if (_new.linkType == 'from') {
+			_new.linkFrom = { name: NodeObject.name, index: NodeObject.id }
+				//NodeObject.name != _new.linkTo ? NodeObject.name : alert("invalid link");
+			return;
+		}
+		_new.linkTo = { name: NodeObject.name, index: NodeObject.id }
+			//NodeObject.name != _new.linkFrom ? NodeObject.name : alert("invalid link");
 	};
-	const onLinkClick = (LinkObject: ILinkObject): void => {
-		//state.currentLink = LinkObject.index;
-		console.log('linlk', LinkObject);
-	};
-	const addNodeWithLink = (): any => {
-		
-		let newNodeToAdd: INodeObject = {
-			id: currentMaxId.value + 1,
-			name: `node-${currentMaxId.value + 1}`,
-		};
-		state.nodes.push(newNodeToAdd);
-		// let newNodeToAdd: Node = {
-		// 	id: currentMaxId.value + 1,
-		// 	name: newNode.name,
-		// };
-		// // let newLink: Link = {
-		// // 	sid: currentMaxId.value + 1, //source/current ID
-		// // 	tid: state.currentNode + 1, //target
-		// // 	_color: 'red',
-		// // };
-		// state.nodes.push(newNodeToAdd);
-		// //state.links.push(newLink);
-
-		// console.log(newNodeToAdd);
-	};
-
-
 	const addLink = () => {
 		const link: ISimpleLink = {
-			source: currentMaxIdx.value - 1,
-			target: currentMaxIdx.value,
+			source: _new.linkFrom.index ?? currentMaxIdx.value - 1,
+			target: _new.linkTo.index ?? currentMaxIdx.value
 		};
 		state.links.push(link);
 	};
 
+	const addNewNode = (): any => {
+		let newNodeToAdd: INodeObject = {
+			id: currentMaxId.value + 1,
+			name: _new.nodeName == null || _new.nodeName == "" ? `node-${currentMaxId.value + 1}` : _new.nodeName 
+		};
+		state.nodes.push(newNodeToAdd);
+
+	};
 
 
-	const save = async (shortId?: string ) => {
+	// const add = (LinkObject: ILinkObject): void => {
+
+	// };
+
+
+	// const createNewLink = (NodeObject: INodeObject): void => {
+	// 	console.log(NodeObject)
+
+	// }
+
+
+	const save = async (shortId?: string) => {
 		let datum: any = {
 			nodes: state.nodes,
 			links: state.links,
@@ -85,12 +84,12 @@ export default function () {
 	const get = async (networkId: string) => {
 		return await axios.get(`${process.env.VUE_APP_API_BASEURL}/Network?shortId=${networkId}`)
 			.then((res) => {
-				let formattedLinks: Link[] =[];
+				let formattedLinks: Link[] = [];
 				state.shortId = router.history.current.params.networkId;
 				let schema = JSON.parse(res.data.schema)
-				schema.links.forEach(element => {
-					var x: ISimpleLink = { source: element.source.id, target: element.target.id };
-					formattedLinks.push(x)
+				schema.links.forEach((element: ILinkObject) => {
+					var link: ISimpleLink = { source: element.source.id, target: element.target.id };
+					formattedLinks.push(link)
 				});
 				state.links = formattedLinks;
 				state.nodes = schema.nodes;
@@ -100,29 +99,23 @@ export default function () {
 	}
 
 	const currentMaxId: any = computed(() => {
-		let nodeArray: any[] = [...state.nodes];
+		if (state.nodes.length === 0) return 0;
+		let nodeArray: INodeObject[] = [...state.nodes];
 		return Math.max(...nodeArray.map((n) => n.id));
 	});
 	const currentMaxIdx: any = computed(() => {
 		let nodeArray: any[] = [...state.nodes];
 		return Math.max(...nodeArray.map((n) => n.index));
 	});
-	const addNode = (): any => {
-		let newNodeToAdd: INodeObject = {
-			id: currentMaxId.value + 1,
-			name: `node-${currentMaxId.value + 1}`,
-		};
-		state.nodes.push(newNodeToAdd);
-	};
+
 
 	return {
 		state,
 		addLink,
 		currentMaxId,
 		onNodeClick,
-		onLinkClick,
-		addNodeWithLink,
-		newNode,
+		addNewNode,
+		_new,
 		get,
 		save
 	};
