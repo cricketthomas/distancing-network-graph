@@ -5,7 +5,11 @@
 			<input type="checkbox" v-on:input="changeTheme" v-model="lightMode" title="theme"/>
 		</label>
 		<router-link to="/about">about</router-link>
-		<d3network :nodes="state.nodes" :links="state.links" @nodeClick="onNodeClick(...arguments)"  /> <!-- @linkClick="onLinkClick()"-->
+		<d3network :nodes="state.nodes" :links="state.links" @nodeClick="onNodeClick"  /> <!-- @linkClick="onLinkClick()"-->
+		<!-- <hr>
+		{{x.nodes.value}}
+		<hr>
+		{{state.nodes}} -->
 		<!--:nodeClick="onNodeClick" -->
 		<button @click="addLink">add link</button>
 		<input type="checkbox" name="view data" v-model="viewData"/>
@@ -43,7 +47,7 @@
 <script lang="ts">
 //	import Vue from 'vue';
 
-	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch, root, context } from 'vue';
+	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch,toRefs, toRef } from 'vue';
 	import router from '@/router'
 	import useNetworkGraph from '@/composables/useNetworkGraph';
 	import useTheme from '@/composables/useTheme';
@@ -57,10 +61,11 @@
 			let currentNetwork: ISavedNetwork;
 			let viewData = ref(false);
 			onMounted(() => {
-				if (router.currentRoute.value.params.networkId === 'new'.toLowerCase()) {
+				let networkParam: string = router.currentRoute.value.params.networkId;
+				if (networkParam === 'new'.toLowerCase()) {
 					state.isNewNetwork = true;
 				} else {
-					let networkId = get(router.currentRoute.value.params.networkId);
+					let networkId = get(networkParam);
 				}
 			});
 			// const cardModal = () => {
@@ -70,7 +75,9 @@
 
 			const { state, currentMaxId, onNodeClick, addNewNode, addLink, _new, get, save } = useNetworkGraph();
 			const { lightMode, changeTheme } = useTheme();
-			return { state, currentMaxId, onNodeClick, addNewNode, _new, save, get, lightMode, changeTheme, addLink, viewData };
+
+			let x = toRefs(state);
+			return { x, state, currentMaxId, onNodeClick, addNewNode, _new, save, get, lightMode, changeTheme, addLink, viewData };
 		},
 		components: { d3network },
 	});

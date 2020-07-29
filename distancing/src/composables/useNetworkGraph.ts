@@ -1,5 +1,5 @@
 import { INodeObject, ILinkObject, Node, Link, ISimpleLink } from '@/models/networkgraph';
-import { reactive, computed, ref } from 'vue';
+import { reactive, computed, ref, isReactive, toRefs} from 'vue';
 import useState from '@/composables/useState';
 import axios from 'axios';
 import router from '@/router';

@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue';
+import { reactive, ref, toRefs } from 'vue';
 import { INodeObject, ILinkObject, Node, Link, State } from '@/models/networkgraph';
 
 export default function () {

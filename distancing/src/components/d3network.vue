@@ -9,8 +9,7 @@
 <script lang="ts">
 	import * as d3 from 'd3';
 
-	import Vue from 'vue';
-	import { defineComponent, onMounted, watch, watchEffect } from 'vue';
+	import { defineComponent, onMounted, watch, watchEffect, toRefs } from 'vue';
 	import { Node, Link } from '@/models/networkgraph';
 	import { mouse } from 'd3';
 
@@ -22,7 +21,9 @@
 			// nodeClick: Function,
 			// linkClick: Function,
 		},
-		setup(props, ctx) {
+		setup(props, context) {
+			const xx = toRefs(props)
+
 			var width = 600;
 			var height = 600;
 			var radius = 10;
@@ -60,7 +61,7 @@
 					.attr('class', 'link');
 
 				link.on('click', function(d: any) {
-					ctx.emit('linkClick', d);
+					context.emit('linkClick', d);
 				});
 
 				var node = g
@@ -74,7 +75,7 @@
 				//.attr('fill', circleColor);
 
 				node.on('click', function(d: any) {
-					ctx.emit('nodeClick', d);
+					context.emit('nodeClick', {id: d.id, name: d.name, index: d.index});
 				});
 
 				var text = g
@@ -169,6 +170,7 @@
 			watch(
 				() => props.nodes,
 				(newNodes, prevNodes) => {
+					console.log("nodes",newNodes)
 					simulation.nodes(newNodes);
 					renderChart();
 					simulation.alpha(.01).restart();
@@ -180,6 +182,7 @@
 			watch(
 				() => props.links,
 				(newLinks, prevLinks) => {
+					console.log("links",newLinks)
 					link_force = d3.forceLink(newLinks).id(function(d) {
 						return d.id;
 					});
@@ -188,26 +191,14 @@
 				}
 			);
 
-			// watchEffect(()=>{
-			// 	simulation.stop();
-			// 	d3.forceLink(props.links).id(function(d) {
-			// 		return d.id;
-			// 	});
-			// 	simulation.nodes(props.nodes);
-			// 	renderChart();
-			// 	simulation.alphaTarget(0.1).restart();
-			// })
-
 			const stop = () => simulation.alphaTarget(0.1).stop();
 			const restart = () => simulation.alpha(1);
 			const resetZoom = () => {
 					var svg = d3.select('.nodes_links')
 					d3.zoom().on('zoom', g.attr('transform', d3.event.transform))
 					d3.zoomIdentity.translate(0,0).scale(0.7);
-
-
 			}
-			return { renderChart, stop, restart,resetZoom};
+			return { renderChart, stop, restart, resetZoom};
 		},
 	});
 </script>
