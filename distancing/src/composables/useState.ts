@@ -1,5 +1,5 @@
-import { reactive, ref } from '@vue/composition-api';
-import { INodeObject, ILinkObject, Node, Link, Option, State } from '@/models/networkgraph';
+import { reactive, ref } from 'vue';
+import { INodeObject, ILinkObject, Node, Link, State } from '@/models/networkgraph';
 
 export default function () {
 

@@ -10,7 +10,7 @@
 	import * as d3 from 'd3';
 
 	import Vue from 'vue';
-	import { defineComponent, onMounted, watch, watchEffect } from '@vue/composition-api';
+	import { defineComponent, onMounted, watch, watchEffect } from 'vue';
 	import { Node, Link } from '@/models/networkgraph';
 	import { mouse } from 'd3';
 

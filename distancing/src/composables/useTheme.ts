@@ -1,4 +1,4 @@
-import { reactive, ref } from '@vue/composition-api';
+
 export default function () {
     let lightMode: any = localStorage.getItem('lightMode') || true;
 

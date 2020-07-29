@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { defineComponent, onMounted, watch } from '@vue/composition-api';
+import { defineComponent, onMounted, watch } from 'vue';
 
 export default defineComponent({
   name: 'App',

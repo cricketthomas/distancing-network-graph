@@ -13,7 +13,7 @@
 
 <script lang="ts">
 	import Vue from 'vue';
-	import { defineComponent, reactive, computed } from '@vue/composition-api';
+	import { defineComponent, reactive, computed } from 'vue';
 	import d3network from '@/components/d3network.vue';
 
 	export default defineComponent({

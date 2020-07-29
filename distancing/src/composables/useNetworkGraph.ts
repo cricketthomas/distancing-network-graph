@@ -1,5 +1,5 @@
 import { INodeObject, ILinkObject, Node, Link, ISimpleLink } from '@/models/networkgraph';
-import { reactive, computed, ref } from '@vue/composition-api';
+import { reactive, computed, ref } from 'vue';
 import useState from '@/composables/useState';
 import axios from 'axios';
 import router from '@/router';
@@ -85,7 +85,7 @@ export default function () {
 		return await axios.get(`${process.env.VUE_APP_API_BASEURL}/Network?shortId=${networkId}`)
 			.then((res) => {
 				let formattedLinks: Link[] = [];
-				state.shortId = router.history.current.params.networkId;
+				state.shortId = router.currentRoute.value.params.networkId;
 				let schema = JSON.parse(res.data.schema)
 				schema.links.forEach((element: ILinkObject) => {
 					var link: ISimpleLink = { source: element.source.id, target: element.target.id };

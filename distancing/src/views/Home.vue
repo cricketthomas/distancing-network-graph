@@ -41,10 +41,10 @@
 </template>
 
 <script lang="ts">
-	import Vue from 'vue';
+//	import Vue from 'vue';
 
-	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch } from '@vue/composition-api';
-
+	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch, root, context } from 'vue';
+	import router from '@/router'
 	import useNetworkGraph from '@/composables/useNetworkGraph';
 	import useTheme from '@/composables/useTheme';
 	import { ISavedNetwork } from '@/models/apiRespone.ts';
@@ -53,15 +53,14 @@
 
 	export default defineComponent({
 		name: 'Home',
-		setup(props, { root }) {
+		setup(props, context) {
 			let currentNetwork: ISavedNetwork;
 			let viewData = ref(false);
 			onMounted(() => {
-				// set the theme
-				if (root.$route.params.networkId === 'new'.toLowerCase()) {
+				if (router.currentRoute.value.params.networkId === 'new'.toLowerCase()) {
 					state.isNewNetwork = true;
 				} else {
-					let networkId = get(root.$route.params.networkId);
+					let networkId = get(router.currentRoute.value.params.networkId);
 				}
 			});
 			// const cardModal = () => {
