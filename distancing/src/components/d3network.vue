@@ -8,21 +8,20 @@
 
 <script lang="ts">
 	import * as d3 from 'd3';
-
 	import { defineComponent, onMounted, watch, watchEffect, toRefs } from 'vue';
 	import { Node, Link } from '@/models/networkgraph';
 	import { mouse } from 'd3';
+import { set } from 'd3';
 
 	export default defineComponent({
 		name: 'd3network',
 		props: {
 			nodes: Array as () => Array<Node>,
-			links: Array as () => Array<Link>
+			links: Array as () => Array<Link>	
 			// nodeClick: Function,
 			// linkClick: Function,
 		},
 		setup(props, context) {
-			const xx = toRefs(props)
 
 			var width = 600;
 			var height = 600;
@@ -170,35 +169,34 @@
 			watch(
 				() => props.nodes,
 				(newNodes, prevNodes) => {
-					console.log("nodes",newNodes)
-					simulation.nodes(newNodes);
-					renderChart();
-					simulation.alpha(.01).restart();
+					console.log("nodes", newNodes, props.nodes)
+					// simulation.nodes(newNodes);
+					// renderChart();
+					// simulation.alpha(.01).restart();
 					//simulation.restart();
-
-
 				}
 			);
 			watch(
 				() => props.links,
 				(newLinks, prevLinks) => {
-					console.log("links",newLinks)
-					link_force = d3.forceLink(newLinks).id(function(d) {
-						return d.id;
-					});
-					simulation.alpha(.01).restart();
-					renderChart();
+					console.log("links", newLinks)
+					// link_force = d3.forceLink(newLinks).id(function(d) {
+					// 	return d.id;
+					// });
+					// simulation.alpha(.01).restart();
+					// renderChart();
 				}
+				
 			);
 
 			const stop = () => simulation.alphaTarget(0.1).stop();
 			const restart = () => simulation.alpha(1);
-			const resetZoom = () => {
-					var svg = d3.select('.nodes_links')
-					d3.zoom().on('zoom', g.attr('transform', d3.event.transform))
-					d3.zoomIdentity.translate(0,0).scale(0.7);
-			}
-			return { renderChart, stop, restart, resetZoom};
+			// const resetZoom = () => {
+			// 		var svg = d3.select('.nodes_links')
+			// 		d3.zoom().on('zoom', g.attr('transform', d3.event.transform))
+			// 		d3.zoomIdentity.translate(0,0).scale(0.7);
+			// }
+			return { renderChart, stop, restart};
 		},
 	});
 </script>

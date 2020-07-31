@@ -1,11 +1,20 @@
-import { INodeObject, ILinkObject, Node, Link, ISimpleLink } from '@/models/networkgraph';
+import { INodeObject, ILinkObject, Node, Link, ISimpleLink, State } from '@/models/networkgraph';
 import { reactive, computed, ref, isReactive, toRefs} from 'vue';
 import useState from '@/composables/useState';
 import axios from 'axios';
 import router from '@/router';
 export default function () {
 
-	const { state } = useState();
+	const { nodes,links, shortId, currentNode, currentLink, isNewNetwork } = useState();
+
+	let state = reactive<State>({
+		nodes,
+		links,
+		shortId,
+		currentNode,
+		currentLink,
+		isNewNetwork
+	});
 
 	const _new = reactive({
 		nodeName: null,
@@ -38,19 +47,7 @@ export default function () {
 			name: _new.nodeName == null || _new.nodeName == "" ? `node-${currentMaxId.value + 1}` : _new.nodeName 
 		};
 		state.nodes.push(newNodeToAdd);
-
 	};
-
-
-	// const add = (LinkObject: ILinkObject): void => {
-
-	// };
-
-
-	// const createNewLink = (NodeObject: INodeObject): void => {
-	// 	console.log(NodeObject)
-
-	// }
 
 
 	const save = async (shortId?: string) => {

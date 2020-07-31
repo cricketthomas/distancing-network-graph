@@ -1,38 +1,42 @@
 <template>
 	<div>
 		<label for="theme">
-			{{ lightMode == true ? 'dark': 'light'}}
-			<input type="checkbox" v-on:input="changeTheme" v-model="lightMode" title="theme"/>
+			{{ lightMode == true ? 'dark' : 'light' }}
+			<input type="checkbox" v-on:input="changeTheme" v-model="lightMode" title="theme" />
 		</label>
 		<router-link to="/about">about</router-link>
-		<d3network :nodes="state.nodes" :links="state.links" @nodeClick="onNodeClick"  /> <!-- @linkClick="onLinkClick()"-->
+		<button @click="testFunc">random num</button>
+		<d3network :links="{links: state.links}" :nodes="{nodes: state.nodes}" @nodeClick="onNodeClick" />
+		<!-- @linkClick="onLinkClick()"-->
 		<!-- <hr>
 		{{x.nodes.value}}
 		<hr>
 		{{state.nodes}} -->
 		<!--:nodeClick="onNodeClick" -->
 		<button @click="addLink">add link</button>
-		<input type="checkbox" name="view data" v-model="viewData"/>
+		<input type="checkbox" name="view data" v-model="viewData" />
 		<div v-if="viewData">
 			<pre>
-				{{ state.nodes }}
-			</pre>
-				<h3>links</h3>
+				{{ nodes }}
+			</pre
+			>
+			<h3>links</h3>
 			<pre>
-				{{ state.links }}
-			</pre>
+				{{ links }}
+			</pre
+			>
 		</div>
-		<hr>
+		<hr />
 		<h2>Link Updater</h2>
-			<input type="radio"  value="to"  v-model="_new.linkType">
-			<label for="one">Link To</label>
-			<br>
-			<input type="radio" value="from" v-model="_new.linkType">
-			<label for="two">Link From</label>
-			{{_new}}
-		<hr>
+		<input type="radio" value="to" v-model="_new.linkType" />
+		<label for="one">Link To</label>
+		<br />
+		<input type="radio" value="from" v-model="_new.linkType" />
+		<label for="two">Link From</label>
+		{{ _new }}
+		<hr />
 		<h5>new node id: {{ currentMaxId }}</h5>
-		<h5>Link to {{ state.currentNode }}</h5>
+		<h5>Link to {{ currentNode }}</h5>
 		<label for="name">
 			Node Name:
 			<input class="input is-small" type="text" v-model.trim="_new.nodeName" />
@@ -45,10 +49,10 @@
 </template>
 
 <script lang="ts">
-//	import Vue from 'vue';
+	//	import Vue from 'vue';
 
-	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch,toRefs, toRef } from 'vue';
-	import router from '@/router'
+	import { defineComponent, ref, reactive, computed, onMounted, watchEffect, watch, toRefs, toRef } from 'vue';
+	import router from '@/router';
 	import useNetworkGraph from '@/composables/useNetworkGraph';
 	import useTheme from '@/composables/useTheme';
 	import { ISavedNetwork } from '@/models/apiRespone.ts';
@@ -63,7 +67,7 @@
 			onMounted(() => {
 				let networkParam: string = router.currentRoute.value.params.networkId;
 				if (networkParam === 'new'.toLowerCase()) {
-					state.isNewNetwork = true;
+					//isNewNetwork = true;
 				} else {
 					let networkId = get(networkParam);
 				}
@@ -72,12 +76,11 @@
 			// 	console.log(context);
 			// 	context.root.$buefy.dialog.alert('hello');
 			// };
-
+	
 			const { state, currentMaxId, onNodeClick, addNewNode, addLink, _new, get, save } = useNetworkGraph();
 			const { lightMode, changeTheme } = useTheme();
-
-			let x = toRefs(state);
-			return { x, state, currentMaxId, onNodeClick, addNewNode, _new, save, get, lightMode, changeTheme, addLink, viewData };
+//nodes, links, shortId, currentNode, currentLink, isNewNetwork
+			return { state, currentMaxId, onNodeClick, addNewNode, _new, save, get, lightMode, changeTheme, addLink, viewData };
 		},
 		components: { d3network },
 	});

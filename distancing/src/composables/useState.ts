@@ -31,14 +31,14 @@ export default function () {
 
     let isNewNetwork = false;
 
-    let state = reactive<State>({
+ 
+
+    return {
         nodes,
         links,
         shortId,
         currentNode,
         currentLink,
         isNewNetwork
-    });
-
-    return { state };
+    };
 }
